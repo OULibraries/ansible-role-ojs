@@ -2,3 +2,12 @@
 # tasks file for OJS
 - include: get.yml
   sudo: yes
+
+- include: deploy.yml
+  sudo: yes
+
+- include: configure.yml
+  sudo: yes
+
+- include: database.yml
+  sudo: yes
