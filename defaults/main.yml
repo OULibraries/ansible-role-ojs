@@ -1,2 +1,8 @@
 ---
 # defaults file for OJS
+ojs_download_url: http://pkp.sfu.ca/ojs/download/
+ojs_version: 2.4.4-1
+ojs_tarball: ojs-{{ ojs_version }}.tar.gz
+ojs_md5sum: 7767843125a05d38071f51b4dda2e363
+ojs_parent_dir: /srv
+ojs_sitename: journals
