@@ -1,0 +1,27 @@
+---
+- name: Set SELinux exceptions for apache
+  command: "setsebool -P {{ item }} on"
+  with_items:
+  - httpd_can_sendmail
+
+- name: Add config include to http.conf
+  lineinfile:
+    state: present
+    dest: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional \"/srv/*/etc/*.conf\""
+
+- name: Add OJS apache config
+  template:
+    src: srv_ojs.conf.j2
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc/srv_ojs.conf"
+    owner: root
+    group: wheel
+    mode: 0664
+
+- name: Add OJS app config
+  template:
+    src: config.inc.php.j2
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/config.inc.php"
+    owner: root
+    group: wheel
+    mode: 0664
