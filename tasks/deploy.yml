@@ -1,0 +1,40 @@
+---
+- name: OJS site directory exists
+  file:
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
+    state: directory
+    mode: 0775
+    owner: root
+    group: wheel
+
+- name: OJS files subdirectory exists
+  file:
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/files"
+    state: directory
+    mode: 0775
+    owner: root
+    group: wheel
+
+- name: OJS etc subdirectory exists
+  file:
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc"
+    state: directory
+    mode: 0775
+    owner: root
+    group: wheel
+
+- name: Unarchive OJS
+  unarchive:
+    src: "/tmp/{{ ojs_tarball }}"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
+    owner: root
+    group: wheel
+    copy: no
+
+- name: Link ojs-$version directory to ojs
+  file:
+    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs"
+    owner: root
+    group: wheel
+    state: link

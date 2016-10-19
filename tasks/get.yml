@@ -4,17 +4,3 @@
     url: "{{ ojs_download_url }}{{ ojs_tarball }}"
     dest: "/tmp/{{ ojs_tarball }}"
     checksum: "md5:{{ ojs_md5sum }}"
-- name: OJS site directory exists
-  file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
-    state: directory
-    mode: 0775
-    owner: root
-    group: wheel
-- name: Unarchive OJS
-  unarchive:
-    src: "/tmp/{{ ojs_tarball }}"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
-    owner: root
-    group: wheel
-    copy: no
