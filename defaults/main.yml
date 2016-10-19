@@ -1,8 +1,34 @@
 ---
 # defaults file for OJS
+
+# dev, test, prod, vagrant, etc.
+environment_name:
+
+# Used for apache Servername and cert config
+httpd_dn_suffix:
+
+
+# We'll end up fetching
+# {{ ojs_download_url }}{{ ojs_tarball }}
 ojs_download_url: http://pkp.sfu.ca/ojs/download/
 ojs_version: 2.4.4-1
-ojs_tarball: ojs-{{ ojs_version }}.tar.gz
+ojs_tarball: "ojs-{{ ojs_version }}.tar.gz"
 ojs_md5sum: 7767843125a05d38071f51b4dda2e363
+
+# configurable filepaths
 ojs_parent_dir: /srv
+
+# The naked hostname for the site, not the FQDN
 ojs_sitename: journals
+
+# Credentials for creating the OJS DB
+ojs_mariadb_login_username:
+ojs_mariadb_login_password:
+
+# DB Client config
+ojs_mariadb_host: localhost
+ojs_mariadb_port: 3306
+ojs_mariadb_username:
+ojs_mariadb_password:
+ojs_mariadb_database: "ojs_{{ ojs_version }}_{{ ojs_sitename }}_{{environment_name }}"
+ojs_mariadb_privileges: "SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES,GRANT"
