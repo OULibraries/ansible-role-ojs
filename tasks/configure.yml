@@ -4,6 +4,27 @@
   with_items:
   - httpd_can_sendmail
 
+- name: Set upload_max_filesize
+  replace:
+    dest: /etc/php.ini
+    regexp: >
+      ^upload_max_filesize = 2M$
+    replace: "upload_max_filesize = 20M"
+
+- name: Set post_max_size
+  replace:
+    dest: /etc/php.ini
+    regexp: >
+      ^post_max_size = 24M$
+    replace: "post_max_size = 70M"
+
+- name: Set PHP timezone
+  replace:
+    dest: /etc/php.ini
+    regexp: >
+      ^;date.timezone =$
+    replace: "date.timezone = America/Chicago"
+
 - name: Add config include to http.conf
   lineinfile:
     state: present
