@@ -15,8 +15,8 @@
   replace:
     dest: /etc/php.ini
     regexp: >
-      ^post_max_size = 24M$
-    replace: "post_max_size = 70M"
+      ^post_max_size = 8M$
+    replace: "post_max_size = 24M"
 
 - name: Set PHP timezone
   replace:
