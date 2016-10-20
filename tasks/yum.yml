@@ -1,0 +1,9 @@
+---
+- name: Install yum packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - mod_php
+  - php
+  - php-mysql
