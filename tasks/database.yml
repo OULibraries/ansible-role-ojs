@@ -10,7 +10,7 @@
 - name: ojs user for database
   mysql_user:
     name: "{{ ojs_mariadb_username }}"
-    host: "{{ ojs_mariadb_host }}"
+    host: "{{ ojs_mariadb_userhost }}"
     password: "{{ ojs_mariadb_password }}"
     priv: "{{ ojs_mariadb_database }}.*:{{ ojs_mariadb_privileges }}"
     login_host: "{{ ojs_mariadb_host }}"
