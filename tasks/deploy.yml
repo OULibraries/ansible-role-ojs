@@ -27,14 +27,25 @@
     group: apache
     copy: no
 
-- name: Link ojs-$version directory to ojs
+- name: Copy files from ojs/public to public
+  copy:
+    remote_src: True
+    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public/"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
+
+- name: Remove ojs/public
   file:
-    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs"
-    state: link
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public"
+    state: absent
 
 - name: Link ojs/public to public
   file:
     src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/public"
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public"
+    state: link
+
+- name: Link ojs-$version directory to ojs
+  file:
+    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}"
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs"
     state: link
