@@ -35,7 +35,7 @@
 - name: Add OJS apache config
   template:
     src: srv_ojs.conf.j2
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc/srv_ojs.conf"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/etc/srv_ojs.conf"
     owner: root
     group: wheel
     mode: 0664
@@ -43,27 +43,27 @@
 - name: Add OJS app config
   template:
     src: config.inc.php.j2
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/config.inc.php"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/config.inc.php"
     owner: apache
     group: apache
     mode: 0664
 
 - name: Set default SELinux context for etc subdirectory
   command: >
-    semanage fcontext -a -t httpd_config_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc(/.*)?"
+    semanage fcontext -a -t httpd_config_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/etc(/.*)?"
   sudo: yes
 
 - name: Set default SELinux context for ojs subdirectory
   command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}(/.*)?"
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}(/.*)?"
   sudo: yes
 
 - name: Set default SELinux context for files subdirectory
   command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/files(/.*)?"
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/files(/.*)?"
   sudo: yes
 
 - name: Restore default SELinux context for OJS
   command: >
-    restorecon -rv {{ ojs_parent_dir }}/{{ ojs_sitename }}
+    restorecon -rv {{ ojs_parent_dir }}/{{ ojs_site_name }}
   sudo: yes

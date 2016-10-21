@@ -1,7 +1,7 @@
 ---
 - name: OJS site directory exists
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
+    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}"
     state: directory
     mode: 0775
     owner: root
@@ -9,7 +9,7 @@
 
 - name: OJS subdirectories exists
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/{{ item }}"
+    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/{{ item }}"
     state: directory
     mode: 0775
     owner: apache
@@ -22,29 +22,29 @@
 - name: Unarchive OJS
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}"
     owner: apache
     group: apache
     copy: no
 
 - name: Copy files from ojs/public to public
   command: >
-    rsync --recursive --times --ignore-existing "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public/" "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
+    rsync --recursive --times --ignore-existing "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public/" "{{ ojs_parent_dir }}/{{ ojs_site_name }}/public"
   sudo: yes
 
 - name: Remove ojs/public
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public"
+    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public"
     state: absent
 
 - name: Link ojs/public to public
   file:
-    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public"
+    src: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/public"
+    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public"
     state: link
 
 - name: Link ojs-$version directory to ojs
   file:
-    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}"
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs"
+    src: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}"
+    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs"
     state: link

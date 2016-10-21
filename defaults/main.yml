@@ -19,13 +19,13 @@ ojs_tarball: "ojs-{{ ojs_version }}.tar.gz"
 ojs_parent_dir: /srv
 
 # The naked hostname for the site, not the FQDN
-ojs_sitename: journals
+ojs_site_name: journals
 
 # OJS site info
 ojs_site_username:
 ojs_site_password:
 ojs_site_email:
-ojs_site_repoid: "{{ ojs_sitename }}.{{ httpd_dn_suffix }}"
+ojs_site_repoid: "{{ ojs_site_name }}.{{ httpd_dn_suffix }}"
 
 # This should probably be automagically generated on the OJS system.
 ojs_password_reset_hash: YouMustSetASecretKeyHere!!
@@ -42,5 +42,5 @@ ojs_mariadb_username: "ojs_{{environment_name | replace('.', '-') }}"
 # For user priviliges
 ojs_mariadb_userhost: localhost
 ojs_mariadb_password:
-ojs_mariadb_database: "ojs_{{ ojs_version | replace('.', '-') }}_{{ ojs_sitename | replace('.', '-') }}_{{environment_name | replace('.', '-') }}"
+ojs_mariadb_database: "ojs_{{ ojs_version | replace('.', '-') }}_{{ ojs_site_name | replace('.', '-') }}_{{environment_name | replace('.', '-') }}"
 ojs_mariadb_privileges: "SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES,GRANT"

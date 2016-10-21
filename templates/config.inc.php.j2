@@ -29,7 +29,7 @@
 installed = Off
 
 ; The canonical URL to the OJS installation (excluding the trailing slash)
-base_url = "https://{{ ojs_sitename }}.{{ httpd_dn_suffix }}"
+base_url = "https://{{ ojs_site_name }}.{{ httpd_dn_suffix }}"
 
 ; Path to the registry directory (containing various settings files)
 ; Although the files in this directory generally do not contain any
@@ -360,7 +360,7 @@ result_cache_hours = 1
 oai = On
 
 ; OAI Repository identifier
-repository_id = {{ ojs_sitename }}.{{ httpd_dn_suffix }}
+repository_id = {{ ojs_site_name }}.{{ httpd_dn_suffix }}
 
 ; Maximum number of records per request to serve via OAI
 oai_max_records = 100

@@ -2,19 +2,19 @@
 
 - name: Check the site install state
   shell: >
-    grep -i '^installed = \(On\|Off\)' "{{ ojs_parent_dir }}"/"{{ ojs_sitename }}"/ojs-"{{ ojs_version }}"/config.inc.php | cut -d '=' -f 2 | xargs
+    grep -i '^installed = \(On\|Off\)' "{{ ojs_parent_dir }}"/"{{ ojs_site_name }}"/ojs-"{{ ojs_version }}"/config.inc.php | cut -d '=' -f 2 | xargs
   register: ojs_installed
 
 - name: Run the OJS install script
   expect:
-    command: php {{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/tools/install.php
+    command: php {{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/tools/install.php
     responses:
       'Select \(en_US\):': '' # Default
       'Select \(None\):': '' # Default
       'Select \(utf-8\):': '' # Default
       'Select \(None\):': '' # Default
       'Select \(None\):': '' # Default
-      'Directory for uploads:': '{{ ojs_parent_dir }}/{{ ojs_sitename }}/files' 
+      'Directory for uploads:': '{{ ojs_parent_dir }}/{{ ojs_site_name }}/files' 
       'Select \(md5\):': '' # Default
       'Username:': '{{ ojs_site_username }}' 
       'Password:': '{{ ojs_site_password }}' 
@@ -35,7 +35,7 @@
 
 - name: Mark the site as installed in config.inc.php
   replace:
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/config.inc.php"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/config.inc.php"
     regexp: >
       ^installed = Off$
     replace: "installed = On"

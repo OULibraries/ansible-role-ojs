@@ -5,10 +5,10 @@
   SSLCertificateKeyFile ${HTTPD_KEY_PATH}/star.{{ httpd_dn_suffix }}/privkey.pem
   SSLCertificateChainFile ${HTTPD_CERT_PATH}/star.{{ httpd_dn_suffix }}/chain.pem
 
-  ServerName {{ ojs_sitename }}.{{ httpd_dn_suffix }}
-  DocumentRoot {{ojs_parent_dir }}/{{ ojs_sitename }}/ojs
+  ServerName {{ ojs_site_name }}.{{ httpd_dn_suffix }}
+  DocumentRoot {{ojs_parent_dir }}/{{ ojs_site_name }}/ojs
 
-  <Directory "{{ojs_parent_dir }}/{{ ojs_sitename }}/ojs">
+  <Directory "{{ojs_parent_dir }}/{{ ojs_site_name }}/ojs">
     Options Indexes FollowSymLinks
     AllowOverride All
     Order allow,deny
