@@ -28,10 +28,9 @@
     copy: no
 
 - name: Copy files from ojs/public to public
-  copy:
-    remote_src: True
-    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public/"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
+  command: >
+    rsync --recursive --times --ignore-existing "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/public/" "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
+  sudo: yes
 
 - name: Remove ojs/public
   file:
