@@ -15,9 +15,11 @@
     owner: apache
     group: apache
   with_items:
-    - public
-    - files
+    - db
     - etc
+    - files
+    - public
+    - snapshots
 
 - name: Unarchive OJS
   unarchive:
