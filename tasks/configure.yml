@@ -48,6 +48,11 @@
     group: apache
     mode: 0664
 
+- name: Set default SELinux context for etc subdirectory
+  command: >
+    semanage fcontext -a -t httpd_config_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc(/.*)?"
+  sudo: yes
+
 - name: Set default SELinux context for ojs subdirectory
   command: >
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}(/.*)?"
