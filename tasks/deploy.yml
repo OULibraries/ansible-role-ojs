@@ -7,34 +7,34 @@
     owner: root
     group: wheel
 
-- name: OJS files subdirectory exists
+- name: OJS subdirectories exists
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/files"
+    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/{{ item }}"
     state: directory
     mode: 0775
-    owner: root
-    group: wheel
-
-- name: OJS etc subdirectory exists
-  file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/etc"
-    state: directory
-    mode: 0775
-    owner: root
-    group: wheel
+    owner: apache
+    group: apache
+  with_items:
+    - public
+    - files
+    - etc
 
 - name: Unarchive OJS
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
     dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}"
-    owner: root
-    group: wheel
+    owner: apache
+    group: apache
     copy: no
 
 - name: Link ojs-$version directory to ojs
   file:
     src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}"
     dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs"
-    owner: root
-    group: wheel
+    state: link
+
+- name: Link ojs/public to public
+  file:
+    src: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/public"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/public"
     state: link

@@ -44,6 +44,21 @@
   template:
     src: config.inc.php.j2
     dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/config.inc.php"
-    owner: root
-    group: wheel
+    owner: apache
+    group: apache
     mode: 0664
+
+- name: Set default SELinux context for ojs subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs(/.*)?"
+  sudo: yes
+
+- name: Set default SELinux context for files subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/files(/.*)?"
+  sudo: yes
+
+- name: Restore default SELinux context for OJS
+  command: >
+    restorecon -rv {{ ojs_parent_dir }}/{{ ojs_sitename }}
+  sudo: yes
