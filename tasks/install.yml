@@ -1,8 +1,8 @@
 ---
 
-- name: Install the OJS site
+- name: Run the OJS install script
   expect:
-    command: php {{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/tools/install.php
+    command: php {{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/tools/install.php
     responses:
       'Select \(en_US\):': '' # Default
       'Select \(None\):': '' # Default
@@ -26,3 +26,10 @@
       '\*\*\* Install Open Journal Systems \[y/N\]': 'y'
     timeout: 300
   ignore_errors: True
+
+- name: Mark the site as installed in config.inc.php
+  replace:
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/config.inc.php"
+    regexp: >
+      ^installed = Off$
+    replace: "installed = On"
