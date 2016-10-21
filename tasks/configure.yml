@@ -30,7 +30,7 @@
   lineinfile:
     state: present
     dest: /etc/httpd/conf/httpd.conf
-    line: "IncludeOptional \"/srv/*/etc/*.conf\""
+    line: "IncludeOptional \"{{ ojs_parent_dir }}/*/etc/*.conf\""
 
 - name: Add OJS apache config
   template:
