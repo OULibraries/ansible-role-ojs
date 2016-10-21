@@ -4,6 +4,9 @@
 - include: yum.yml
   sudo: yes
 
+- include: pip.yml
+  sudo: yes
+
 - include: get.yml
   sudo: yes
 

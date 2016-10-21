@@ -1,0 +1,8 @@
+---
+- name: Pip Packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - pip
+    - pexpect
