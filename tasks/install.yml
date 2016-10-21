@@ -1,5 +1,10 @@
 ---
 
+- name: Check the site install state
+  shell: >
+    grep -i '^installed = \(On\|Off\)' /srv/journals/ojs/config.inc.php | cut -d '=' -f 2 | xarg
+  register: ojs_installed
+
 - name: Run the OJS install script
   expect:
     command: php {{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/tools/install.php
@@ -26,6 +31,7 @@
       '\*\*\* Install Open Journal Systems \[y/N\]': 'y'
     timeout: 300
   ignore_errors: True
+  when: (ojs_installed.stdout == "Off")
 
 - name: Mark the site as installed in config.inc.php
   replace:
@@ -33,3 +39,4 @@
     regexp: >
       ^installed = Off$
     replace: "installed = On"
+  when: (ojs_installed.stdout == "Off")
