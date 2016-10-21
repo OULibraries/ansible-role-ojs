@@ -43,14 +43,14 @@
 - name: Add OJS app config
   template:
     src: config.inc.php.j2
-    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/config.inc.php"
+    dest: "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}/config.inc.php"
     owner: apache
     group: apache
     mode: 0664
 
 - name: Set default SELinux context for ojs subdirectory
   command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs(/.*)?"
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs-{{ ojs_version }}(/.*)?"
   sudo: yes
 
 - name: Set default SELinux context for files subdirectory
