@@ -10,16 +10,19 @@ httpd_dn_suffix:
 
 # We'll end up fetching
 # {{ ojs_download_url }}{{ ojs_tarball }}
+ojs_version: 2.4.8-1
+ojs_md5sum: 574bbacc8820486c32ed3bb9447625c0
 ojs_download_url: http://pkp.sfu.ca/ojs/download/
-ojs_version: 2.4.4-1
 ojs_tarball: "ojs-{{ ojs_version }}.tar.gz"
-ojs_md5sum: 7767843125a05d38071f51b4dda2e363
 
 # configurable filepaths
 ojs_parent_dir: /srv
 
 # The naked hostname for the site, not the FQDN
 ojs_sitename: journals
+
+# This should probably be automagically generated on the OJS system.
+ojs_password_reset_hash: YouMustSetASecretKeyHere!!
 
 # Credentials for creating the OJS DB
 ojs_mariadb_login_username:
