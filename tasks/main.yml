@@ -21,3 +21,6 @@
 
 - include: install.yml
   sudo: yes
+
+- include: services.yml
+  sudo: yes
