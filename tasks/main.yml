@@ -18,3 +18,6 @@
 
 - include: database.yml
   sudo: yes
+
+- include: install.yml
+  sudo: yes

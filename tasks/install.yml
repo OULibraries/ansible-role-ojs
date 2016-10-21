@@ -1,0 +1,28 @@
+---
+
+- name: Install the OJS site
+  expect:
+    command: php {{ ojs_parent_dir }}/{{ ojs_sitename }}/ojs/tools/install.php
+    responses:
+      'Select (en_US):': '' # Default
+      'Select (None):': '' # Default
+      'Select (utf-8):': '' # Default
+      'Select (None):': '' # Default
+      'Select (None):': '' # Default
+      'Directory for uploads:': '{{ ojs_parent_dir }}/{{ ojs_sitename }}/files' 
+      'Select (md5):': '' # Default
+      'Username:': '{{ ojs_site_username }}' 
+      'Password:': '{{ ojs_site_password }}' 
+      'Repeat password:': '{{ ojs_site_password }}'
+      'Email:': '{{ ojs_site_email }}'
+      'Select:': 'mysql'
+      'Host (None):': '{{ ojs_mariadb_host }}'
+      'Username (None):': '{{ ojs_mariadb_username }}'
+      'Password (None):': '{{ ojs_mariadb_password }}'
+      'Database name:': '{{ ojs_mariadb_database }}'
+      'Create new database [Y/n]': 'n'
+      'Repository Identifier:': '{{ ojs_site_repoid }}'
+      'Provide a unique site ID and OAI base URL to PKP for statistics and security alert purposes only. [Y/n]': '' # Default
+      '*** Install Open Journal Systems [y/N]': 'y'
+    timeout: 120
+    echo: yes
