@@ -36,12 +36,12 @@
     group: wheel
     mode: 0444
 
-#- name: Install cron scripts
-#  copy:
-#    src: "{{ item }}"
-#    dest: /etc/cron.daily/
-#    mode: 0755
-#    owner: root
-#    group: wheel
-#  with_items:
-#      - ojs_daily.cron
+- name: Install cron scripts
+  copy:
+    src: "{{ item }}"
+    dest: /etc/cron.daily/
+    mode: 0755
+    owner: root
+    group: wheel
+  with_items:
+      - ojs_daily.cron

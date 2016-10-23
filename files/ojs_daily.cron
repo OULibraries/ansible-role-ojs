@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+printf "Searching for OJS sites.\n"
+find -L /srv -maxdepth 1 -mindepth 1 -type d 2>/dev/null | while read -r SITEPATH ; do
+  # Check for config.inc.php
+  stat ${SITEPATH}/ojs/config.inc.php &>/dev/null
+  if [ "$?" -eq "0" ]; then
+    printf "Backing up ${SITEPATH}\n"
+    /opt/oulib/ojs/bin/ojs_snapshot.sh ${SITEPATH}
+    /opt/oulib/ojs/bin/ojs_update.sh ${SITEPATH}
+  fi
+done
+
+printf "Done.\n"
