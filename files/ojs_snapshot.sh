@@ -12,7 +12,7 @@ Usage: ojs_snapshot.sh \$SITEPATH
             
 \$SITEPATH   OJS site to tar (eg. /srv/example).
 
-Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar. $DOW is
+Backups will be stored at $SITEPATH/snapshots/$SITE.$DOW.tar.gz. $DOW is
 the lowercase day-of-week abbreviation for the current day.
 
 USAGE
@@ -36,6 +36,6 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 ojs_dump.sh $SITEPATH
 
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-sudo -u apache tar -cf  "$SNAPSHOTDIR/$SITE.$DOW.tar" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
+sudo -u apache tar -czf  "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
 
-echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar"
+echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"
