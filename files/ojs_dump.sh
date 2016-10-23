@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 ## Sync OJS files & DB from source host
-PATH=/opt/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
+PATH=/opt/oulib/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
-source /opt/ojs/etc/ojs_conf.sh
+source /opt/oulib/ojs/etc/ojs_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE

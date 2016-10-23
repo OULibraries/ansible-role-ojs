@@ -1,0 +1,55 @@
+---
+- name: Ensure /opt/oulib/ojs/bin exists
+  file:
+    path: /opt/oulib/ojs/bin
+    state: directory
+    mode: 0755
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: scripts to /opt/oulib/ojs/bin
+  copy:
+    src: "{{ item }}"
+    dest: /opt/oulib/ojs/bin/
+    mode: 0755
+    owner: root
+    group: wheel
+  with_items:
+      - ojs_dump.sh
+      - ojs_snapshot.sh
+
+- name: Install cron scripts
+  copy:
+    src: "{{ item }}"
+    dest: /etc/cron.daily/
+    mode: 0755
+    owner: root
+    group: wheel
+  with_items:
+      - ojs_daily.cron
+
+- name: Install apc.ini
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    src: apc.ini
+    dest: /etc/php.d
+
+- name: Ensure /opt/oulib/ojs/etc exists
+  file:
+    path: /opt/oulib/ojs/etc
+    state: directory
+    mode: 0755
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Install ojs config
+  copy:
+    src: ojs_conf.sh
+    dest: /opt/oulib/ojs/etc/ojs_conf.sh
+    owner: root
+    group: wheel
+    mode: 0444
