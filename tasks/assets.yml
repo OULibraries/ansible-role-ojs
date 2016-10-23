@@ -19,24 +19,6 @@
       - ojs_dump.sh
       - ojs_snapshot.sh
 
-- name: Install cron scripts
-  copy:
-    src: "{{ item }}"
-    dest: /etc/cron.daily/
-    mode: 0755
-    owner: root
-    group: wheel
-  with_items:
-      - ojs_daily.cron
-
-- name: Install apc.ini
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    src: apc.ini
-    dest: /etc/php.d
-
 - name: Ensure /opt/oulib/ojs/etc exists
   file:
     path: /opt/oulib/ojs/etc
@@ -53,3 +35,13 @@
     owner: root
     group: wheel
     mode: 0444
+
+#- name: Install cron scripts
+#  copy:
+#    src: "{{ item }}"
+#    dest: /etc/cron.daily/
+#    mode: 0755
+#    owner: root
+#    group: wheel
+#  with_items:
+#      - ojs_daily.cron
