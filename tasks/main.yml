@@ -3,24 +3,36 @@
 
 - include: yum.yml
   sudo: yes
+  tags: ojs_yum
 
 - include: pip.yml
   sudo: yes
+  tags: ojs_pip
 
 - include: get.yml
   sudo: yes
+  tags: ojs_get
 
 - include: deploy.yml
   sudo: yes
+  tags: ojs_deploy
 
 - include: configure.yml
   sudo: yes
+  tags: ojs_configure
 
 - include: database.yml
   sudo: yes
+  tags: ojs_database
 
 - include: install.yml
   sudo: yes
+  tags: ojs_install
 
 - include: services.yml
   sudo: yes
+  tags: ojs_services
+
+- include: assets.yml
+  sudo: yes
+  tags: ojs_assets
