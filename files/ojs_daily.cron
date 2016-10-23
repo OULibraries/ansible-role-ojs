@@ -6,7 +6,6 @@ find -L /srv -maxdepth 1 -mindepth 1 -type d 2>/dev/null | while read -r SITEPAT
   if [ "$?" -eq "0" ]; then
     printf "Backing up ${SITEPATH}\n"
     /opt/oulib/ojs/bin/ojs_snapshot.sh ${SITEPATH}
-    /opt/oulib/ojs/bin/ojs_update.sh ${SITEPATH}
   fi
 done
 
