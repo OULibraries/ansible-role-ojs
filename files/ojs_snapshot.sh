@@ -21,6 +21,7 @@ fi
 
 SITEPATH=$1
 SITE=$(basename "$SITEPATH")
+OJSDIR=$(basename "${PKPDIR}")
 SNAPSHOTDIR="$SITEPATH/snapshots"
 DOW=$( date +%a | awk '{print tolower($0)}')
 
@@ -35,7 +36,6 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 ojs_dump.sh $SITEPATH
 
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-#sudo -u apache tar -cf  "$SNAPSHOTDIR/$SITE.$DOW.tar" -C /srv/ "${SITE}/etc" "${SITE}/files" "${SITE}/ojs" "${SITE}/public"
-sudo -u apache tar --exclude "${SNAPSHOTDIR}" -cf "$SNAPSHOTDIR/$SITE.$DOW.tar" "${SITEPATH}"
+sudo -u apache tar -cf  "$SNAPSHOTDIR/$SITE.$DOW.tar" -C ${PKPPARENT}/ "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
 
 echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar"
