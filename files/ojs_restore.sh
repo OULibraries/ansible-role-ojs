@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-## Deploy drupal site from drush make
+
 PATH=/opt/oulib/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 ## Require arguments

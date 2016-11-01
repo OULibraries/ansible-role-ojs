@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-## Sync OJS files & DB from source host
+
 PATH=/opt/oulib/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/oulib/ojs/etc/ojs_conf.sh

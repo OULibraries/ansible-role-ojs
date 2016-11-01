@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ojs_snapshot.sh creates a db dump and tar backup for a site.
+
 PATH=/opt/oulib/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 source /opt/oulib/ojs/etc/ojs_conf.sh
