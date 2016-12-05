@@ -6,43 +6,25 @@ source /opt/oulib/ojs/etc/ojs_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-ojs_importdb.sh imports a OJS database file. 
+ojs_dump.sh performs a database import to an OJS site.
 
-Usage: ojs_importdb.sh \$SITEPATH [\$DBFILE]
+Usage: ojs_importdb.sh \$SITEPATH
             
-\$SITEPATH  OJS site path
-\$DBFILE    OJS database file to load
-
-If \$DBFILE is not given, then \$SITEPATH/db/ojs_\$SITE_dump.sql will be used.
+\$SITEPATH  OJS target site for sql import (eg. /srv/example).
 USAGE
 
   exit 1;
 fi
 
 SITEPATH=$1
-echo "Processing $SITEPATH"
 
-if [[ ! -e $SITEPATH ]]; then
-    echo "No site exists at ${SITEPATH}."
-    exit 1;
-fi
+echo "Importing $SITEPATH database"
 
-## Grab the basename of the NEW site to use in a few places.
+## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
 
-if [[ ! -z "$2" ]]
-then
-    DBFILE=$2
-else
-    DBFILE="${SITEPATH}/db/ojs_${SITE}_dump.sql"
-fi       
+## Perform sql-dump
+sudo -u apache bash -c "mysql -h $PKPDBHOST -u $PKPUSER -p$PKPPASS -B $PKPDB < $SITEPATH/db/ojs_${SITE}_dump.sql"
 
-if [[ ! -f $DBFILE ]]; then
-    echo "No file exists at ${DBFILE}."
-    exit 1;
-fi
+echo "Finished importing $SITEPATH database."
 
-## Load sql-dump to local DB
-echo "Importing database for $SITE from file at $DBFILE."
-sudo -u apache mysql -h ${PKPDBHOST} -u ${PKPUSER} -p${PKPPASS} ${PKPDB} < ${DBFILE} || exit 1;
-echo "Database imported."

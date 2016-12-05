@@ -17,6 +17,7 @@
     group: wheel
   with_items:
       - ojs_dump.sh
+      - ojs_importdb.sh
       - ojs_restore.sh
       - ojs_snapshot.sh
 
