@@ -6,7 +6,7 @@ source /opt/oulib/ojs/etc/ojs_conf.sh
 
 if [  -z "$1" ]; then
   cat <<USAGE
-ojs_dump.sh performs a database import to an OJS site.
+ojs_importdb.sh performs a database import to an OJS site.
 
 Usage: ojs_importdb.sh \$SITEPATH
             
@@ -23,8 +23,8 @@ echo "Importing $SITEPATH database"
 ## Grab the basename of the site to use in a few places.
 SITE=$(basename "$SITEPATH")
 
-## Perform sql-dump
-sudo -u apache bash -c "mysql -h $PKPDBHOST -u $PKPUSER -p$PKPPASS -B $PKPDB < $SITEPATH/db/ojs_${SITE}_dump.sql"
+## Import sql-dump
+sudo -u apache bash -c "mysql -h $PKPDBHOST -u $PKPUSER -p$PKPPASS -D $PKPDB < $SITEPATH/db/ojs_${SITE}_dump.sql"
 
 echo "Finished importing $SITEPATH database."
 
