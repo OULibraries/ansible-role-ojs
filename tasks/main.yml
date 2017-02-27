@@ -9,6 +9,10 @@
   sudo: yes
   tags: ojs_pip
 
+- include: assets.yml
+  sudo: yes
+  tags: ojs_assets
+
 - include: get.yml
   sudo: yes
   tags: ojs_get
@@ -32,7 +36,3 @@
 - include: services.yml
   sudo: yes
   tags: ojs_services
-
-- include: assets.yml
-  sudo: yes
-  tags: ojs_assets
