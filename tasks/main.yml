@@ -2,37 +2,37 @@
 # tasks file for OJS
 
 - include: yum.yml
-  sudo: yes
+  become: true
   tags: ojs_yum
 
 - include: pip.yml
-  sudo: yes
+  become: true
   tags: ojs_pip
 
 - include: assets.yml
-  sudo: yes
+  become: true
   tags: ojs_assets
 
 - include: get.yml
-  sudo: yes
+  become: true
   tags: ojs_get
 
 - include: deploy.yml
-  sudo: yes
+  become: true
   tags: ojs_deploy
 
 - include: configure.yml
-  sudo: yes
+  become: true
   tags: ojs_configure
 
 - include: database.yml
-  sudo: yes
+  become: true
   tags: ojs_database
 
 - include: install.yml
-  sudo: yes
+  become: true
   tags: ojs_install
 
 - include: services.yml
-  sudo: yes
+  become: true
   tags: ojs_services

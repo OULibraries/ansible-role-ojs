@@ -32,7 +32,7 @@
 - name: Copy files from ojs/public to public
   command: >
     rsync --recursive --times --ignore-existing "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public/" "{{ ojs_parent_dir }}/{{ ojs_site_name }}/public"
-  sudo: yes
+  become: true
 
 - name: Remove ojs/public
   file:
