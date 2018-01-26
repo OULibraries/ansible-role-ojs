@@ -26,44 +26,5 @@
       ^;date.timezone =$
     replace: "date.timezone = America/Chicago"
 
-- name: Add config include to http.conf
-  lineinfile:
-    state: present
-    dest: /etc/httpd/conf/httpd.conf
-    line: "IncludeOptional \"{{ ojs_parent_dir }}/*/etc/*.conf\""
 
-- name: Add OJS apache config
-  template:
-    src: srv_ojs.conf.j2
-    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/etc/srv_ojs.conf"
-    owner: root
-    group: wheel
-    mode: 0664
 
-- name: Add OJS app config
-  template:
-    src: config.inc.php.j2
-    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/config.inc.php"
-    owner: apache
-    group: apache
-    mode: 0664
-
-- name: Set default SELinux context for etc subdirectory
-  command: >
-    semanage fcontext -a -t httpd_config_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/etc(/.*)?"
-  become: true
-
-- name: Set default SELinux context for ojs subdirectory
-  command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}(/.*)?"
-  become: true
-
-- name: Set default SELinux context for files subdirectory
-  command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ ojs_parent_dir }}/{{ ojs_site_name }}/files(/.*)?"
-  become: true
-
-- name: Restore default SELinux context for OJS
-  command: >
-    restorecon -rv {{ ojs_parent_dir }}/{{ ojs_site_name }}
-  become: true

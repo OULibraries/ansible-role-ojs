@@ -4,12 +4,4 @@
     name: "{{ item }}"
     state: present
   with_items:
-  - gcc
-  - mariadb
-  - mod_php
-  - MySQL-python
-  - patch
-  - php
-  - php-mysql
-  - php-xml
-  - python-pip
+

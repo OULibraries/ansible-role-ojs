@@ -1,0 +1,21 @@
+---
+
+
+
+- name: Create nginx site config folders
+  file:
+    path: "/srv/{{ item.name }}/etc/"
+    state: directory
+    owner: nginx
+    group: wheel
+    mode: 0755
+  with_items: "{{ ojs_sites }}"
+
+- name: Create nginx config for OJS sites 
+  template:
+    src: nginx.conf.j2
+    dest: /srv/{{item.name }}/etc/nginx.conf
+    owner: nginx
+    group: wheel
+    mode: 0644
+  with_items:  "{{ ojs_sites }}"    
