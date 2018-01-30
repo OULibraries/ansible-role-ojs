@@ -24,8 +24,8 @@
     path: "{{ item.0}}/{{item.1}}"
     state: directory
     mode: 0775
-    owner: apache
-    group: apache
+    owner: nginx
+    group: nginx
   with_nested:
     - "{{ojs_calculated_paths }}"
     - - db
@@ -39,20 +39,20 @@
     src: config.inc.php.j2
     dest: "{{ ojs_parent_dir }}/{{ item.0.name }}/sites/{{item.1.path }}/etc/config.inc.php"
     mode: 0644
-    owner: apache
-    group: wheel
-            
+    owner: nginx
+    group: nginx
   with_subelements:
     - "{{ ojs_sites }}" 
     - installs
+
 
 - name: Unarchive OJS
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
     dest: "{{item}}"
     creates:  "{{ item }}/ojs-{{ ojs_version }}/README.md"
-    owner: apache
-    group: apache
+    owner: nginx
+    group: nginx
     copy: no
   with_items: "{{ojs_calculated_paths }}"
 
