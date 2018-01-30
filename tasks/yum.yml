@@ -1,7 +1,10 @@
 ---
+
+# Unfortunately, we need to install nginx in this role to avoid having a
+# circular dependency between this role and the nginx role
 - name: Install yum packages
   yum:
     name: "{{ item }}"
     state: present
   with_items:
-
+    - nginx
