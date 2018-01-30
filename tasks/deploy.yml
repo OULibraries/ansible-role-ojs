@@ -67,10 +67,23 @@
     state: absent
   with_items: "{{ojs_calculated_paths }}"
 
-- name: Link to site public folder
+- name: Add link to public folder
   file:
     src: "{{ item }}/public"      
     path: "{{ item }}/ojs-{{ ojs_version }}/public"
+    state: link
+  with_items: "{{ojs_calculated_paths }}"
+
+- name: Remove default config.inc.php from ojs dist folder
+  file:
+    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
+    state: absent
+  with_items: "{{ojs_calculated_paths }}"
+
+- name: Add link to config.inc.php to ojs-$version dir
+  file:
+    src: "{{ item }}/etc/config.inc.php"
+    path: "{{ item }}/ojs/config.inc.php"
     state: link
   with_items: "{{ojs_calculated_paths }}"
 
