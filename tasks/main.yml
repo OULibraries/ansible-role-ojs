@@ -1,6 +1,10 @@
 ---
 # tasks file for OJS
 
+- include: yum.yml
+  become: true
+  tags: ojs_yum
+
 - include: assets.yml
   become: true
   tags: ojs_assets
