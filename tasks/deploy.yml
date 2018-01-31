@@ -1,52 +1,124 @@
 ---
-- name: OJS site directory exists
+
+- name: Calculate OJS install paths
+  set_fact: 
+    ojs_calculated_paths: 
+       "{{ ojs_calculated_paths|default([]) + [ ojs_parent_dir + '/' + item.0.name +'/sites/' + item.1.path] }}"
+  with_subelements:
+    - "{{ ojs_sites }}" 
+    - installs
+
+- name: OJS site directories exist
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}"
+    path: "{{ ojs_parent_dir }}/{{ item.0.name }}/sites/{{item.1.path }}"
     state: directory
     mode: 0775
     owner: root
     group: wheel
+  with_subelements:
+    - "{{ ojs_sites }}" 
+    - installs
 
-- name: OJS subdirectories exists
+- name: OJS site subdirectories exist
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/{{ item }}"
+    path: "{{ item.0}}/{{item.1}}"
     state: directory
     mode: 0775
-    owner: apache
-    group: apache
-  with_items:
-    - db
-    - etc
-    - files
-    - public
-    - snapshots
+    owner: nginx
+    group: nginx
+  with_nested:
+    - "{{ojs_calculated_paths }}"
+    - - db
+      - etc
+      - files
+      - public
+      - snapshots
+
+- name: OJS site configs exist 
+  template:
+    src: config.inc.php.j2
+    dest: "{{ ojs_parent_dir }}/{{ item.0.name }}/sites/{{item.1.path }}/etc/config.inc.php"
+    mode: 0644
+    owner: nginx
+    group: nginx
+  with_subelements:
+    - "{{ ojs_sites }}" 
+    - installs
+
 
 - name: Unarchive OJS
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
-    dest: "{{ ojs_parent_dir }}/{{ ojs_site_name }}"
-    owner: apache
-    group: apache
+    dest: "{{item}}"
+    creates:  "{{ item }}/ojs-{{ ojs_version }}/README.md"
+    owner: nginx
+    group: nginx
     copy: no
+  with_items: "{{ojs_calculated_paths }}"
 
 - name: Copy files from ojs/public to public
   command: >
-    rsync --recursive --times --ignore-existing "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public/" "{{ ojs_parent_dir }}/{{ ojs_site_name }}/public"
-  become: true
+    rsync --recursive --times --ignore-existing "{{ item }}/ojs-{{ ojs_version }}/public/" "{{ item }}/public"
+  with_items: "{{ojs_calculated_paths }}"
 
-- name: Remove ojs/public
+- name: Remove public from ojs dist folder
   file:
-    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public"
+    path: "{{ item }}/ojs-{{ ojs_version }}/public"
     state: absent
+  with_items: "{{ojs_calculated_paths }}"
 
-- name: Link ojs/public to public
+- name: Add link to public folder
   file:
-    src: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/public"
-    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}/public"
+    src: "{{ item }}/public"      
+    path: "{{ item }}/ojs-{{ ojs_version }}/public"
     state: link
+  with_items: "{{ojs_calculated_paths }}"
+
+- name: Remove default config.inc.php from ojs dist folder
+  file:
+    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
+    state: absent
+  with_items: "{{ojs_calculated_paths }}"
+
+- name: Add link to config.inc.php to ojs-$version dir
+  file:
+    src: "{{ item }}/etc/config.inc.php"
+    path: "{{ item }}/ojs/config.inc.php"
+    state: link
+  with_items: "{{ojs_calculated_paths }}"
 
 - name: Link ojs-$version directory to ojs
   file:
-    src: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs-{{ ojs_version }}"
-    path: "{{ ojs_parent_dir }}/{{ ojs_site_name }}/ojs"
+    src: "{{ item }}/ojs-{{ ojs_version }}"
+    path: "{{ item }}/ojs"
     state: link
+  with_items: "{{ojs_calculated_paths }}"
+
+
+- name: Set default SELinux context for etc subdirectory
+  command: >
+    semanage fcontext -a -t httpd_config_t  "{{ item }}/etc(/.*)?"
+  with_items: "{{ojs_calculated_paths }}"
+
+- name: Set default SELinux context for ojs subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/ojs-{{ ojs_version }}(/.*)?"
+  with_items: "{{ojs_calculated_paths }}"
+
+
+- name: Set default SELinux context for files subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/files(/.*)?"
+  with_items: "{{ojs_calculated_paths }}"
+
+
+- name: Restore default SELinux context for OJS
+  command: >
+    restorecon -rv {{ item }}
+  with_items: "{{ojs_calculated_paths }}"
+
+
+
+
+
+

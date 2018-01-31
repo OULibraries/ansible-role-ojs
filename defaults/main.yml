@@ -1,47 +1,11 @@
 ---
 # defaults file for OJS
 
-# dev, test, prod, vagrant, etc.
-environment_name:
-
-# Used for apache Servername and cert config
-httpd_dn_suffix:
-
-
 # We'll end up fetching
 # {{ ojs_download_url }}{{ ojs_tarball }}
-ojs_version: 2.4.8-1
-ojs_md5sum: 574bbacc8820486c32ed3bb9447625c0
+ojs_version: 3.1.0-1  
+ojs_md5sum: fcb665e19ae25c204c3ddc7efa86d232
 ojs_download_url: http://pkp.sfu.ca/ojs/download/
 ojs_tarball: "ojs-{{ ojs_version }}.tar.gz"
 
-# configurable filepaths
-ojs_parent_dir: /srv
-
-# The naked hostname for the site, not the FQDN
-ojs_site_name: journals
-
-# OJS site info
-ojs_site_username:
-ojs_site_password:
-ojs_site_email:
-ojs_site_repoid: "{{ ojs_site_name }}.{{ httpd_dn_suffix }}"
-
-# This should probably be automagically generated on the OJS system.
-ojs_password_reset_hash: YouMustSetASecretKeyHere!!
-
-# Credentials for creating the OJS DB
-ojs_mariadb_login_username:
-ojs_mariadb_login_password:
-
-# DB Client config
-# For connection
-ojs_mariadb_host: localhost
-ojs_mariadb_port: 3306
-ojs_mariadb_username: "ojs_{{environment_name | replace('.', '-') }}"
-# For user priviliges
-ojs_mariadb_userhost: localhost
-ojs_mariadb_password:
-ojs_mariadb_database: "ojs_{{ ojs_version | replace('.', '-') }}_{{ ojs_site_name | replace('.', '-') }}_{{environment_name | replace('.', '-') }}"
-ojs_mariadb_privileges: "SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES,GRANT"
-ojs_mariadb_append_privs: no
+ojs_parent_dir: "/srv"

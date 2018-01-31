@@ -1,14 +1,6 @@
 ---
 # tasks file for OJS
 
-- include: yum.yml
-  become: true
-  tags: ojs_yum
-
-- include: pip.yml
-  become: true
-  tags: ojs_pip
-
 - include: assets.yml
   become: true
   tags: ojs_assets
@@ -21,18 +13,14 @@
   become: true
   tags: ojs_deploy
 
-- include: configure.yml
-  become: true
-  tags: ojs_configure
+#- include: configure.yml
+  #become: true
+  #tags: ojs_configure
 
-- include: database.yml
-  become: true
-  tags: ojs_database
+#- include: install.yml
+  #become: true
+  #tags: ojs_install
 
-- include: install.yml
+- include: nginx.yml
   become: true
-  tags: ojs_install
-
-- include: services.yml
-  become: true
-  tags: ojs_services
+  tags: ojs_nginx

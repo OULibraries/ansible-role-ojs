@@ -1,8 +1,0 @@
----
-- name: Restart httpd and run on boot
-  service:
-    name: "{{ item }}"
-    state: restarted
-    enabled: yes
-  with_items:
-  - httpd
