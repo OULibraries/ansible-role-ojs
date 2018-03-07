@@ -39,6 +39,7 @@
     src: config.inc.php.j2
     dest: "{{ ojs_parent_dir }}/{{ item.0.name }}/sites/{{item.1.path }}/etc/config.inc.php"
     mode: 0644
+    force: no        
     owner: nginx
     group: nginx
   with_subelements:
