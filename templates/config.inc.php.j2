@@ -84,7 +84,7 @@ allow_url_fopen = Off
 ; base_url[myJournal] = http://www.myUrl.com/myJournal
 ; base_url[myOtherJournal] = http://myOtherJournal.myUrl.com
 base_url[index] = "https://{{item.0.name}}/{{item.1.path}}/index"
-base_url[arp] = "https://{{item.0.name}}/{{item.1.path}}"
+base_url[item.1.path] = "https://{{item.0.name}}/{{item.1.path}}"
 
 
 ; Generate RESTful URLs using mod_rewrite.  This requires the
@@ -126,9 +126,9 @@ enable_beacon =
 [database]
 
 driver = mysqli
-host = localhost
-username = root
-password = root
+host =  {{ ojs_db_host }}
+username =  {{ojs_db_user }}
+password = {{ojs_db_pass }}
 name = ojs3_{{item.1.path}}_{{environment_name}}
 
 ; Enable persistent connections
@@ -240,10 +240,10 @@ filename_revision_match = 70
 [security]
 
 ; Force SSL connections site-wide
-force_ssl = Off
+force_ssl = On
 
 ; Force SSL connections for login only
-force_login_ssl = Off
+force_login_ssl = On
 
 ; This check will invalidate a session if the user's IP address changes.
 ; Enabling this option provides some amount of additional security, but may
@@ -257,7 +257,7 @@ session_check_ip = On
 encryption = sha1
 
 ; The unique salt to use for generating password reset hashes
-salt = "YouMustSetASecretKeyHere!!"
+salt = "{{ ojs_salt }} 
 
 ; The unique secret used for encoding and decoding API keys
 api_key_secret = ""
