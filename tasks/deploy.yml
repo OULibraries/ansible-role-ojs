@@ -6,6 +6,12 @@
     dest: "/tmp/{{ ojs_tarball }}"
     checksum: "md5:{{ ojs_md5sum }}"
 
+- name: Get OJS Bootstrap theme
+  get_url:
+    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
+    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
+    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
+
 - name: Calculate OJS install paths
   set_fact: 
     ojs_calculated_paths: 
@@ -52,7 +58,7 @@
     - "{{ ojs_sites }}" 
     - installs
 
-- name: Unarchive OJS
+- name: Deploy OJS code
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
     dest: "{{item}}"
@@ -61,6 +67,17 @@
     group: nginx
     copy: no
   with_items: "{{ojs_calculated_paths }}"
+
+- name: Deploy OJS Bootstrap Theme
+  unarchive:
+    src: "/tmp/{{ ojs_bootstrap_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins"
+    #creates:  ""
+    owner: nginx
+    group: nginx
+    copy: no
+  with_items: "{{ojs_calculated_paths }}"
+
 
 - name: Link ojs-$version directory to ojs
   file:
