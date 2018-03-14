@@ -1,6 +1,0 @@
----
-- name: Get OJS
-  get_url:
-    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
-    dest: "/tmp/{{ ojs_tarball }}"
-    checksum: "md5:{{ ojs_md5sum }}"

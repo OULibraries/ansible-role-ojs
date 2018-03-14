@@ -1,20 +1,26 @@
   # OJS Site Configuration 
 
-
 {% for install in item.installs %}
-  
+
   location /{{ install.path }} {
 
-    # Route root urls to the default journal 
-    rewrite "^/{{ install.path }}/index(/.*)?$" /{{ install.path }}/ojs/index$1 last;
-    rewrite "^/{{install.path }}(.*)$" /{{install.path }}/ojs/{{ install.path }}$1 last;  
-      
-    index index.php index.html;
     root "/srv/{{item.name }}/sites";  
+    
+    # Deny access to some internals
+    location ~ /\.ht {
+      deny all;
+    }
+    location ~ /ojs/cache/ {
+      deny all;
+    }
+
+    # Clean up OJS  urls
+    rewrite "^/{{ install.path }}/index(/.*)?$" /{{ install.path }}/ojs/index$1 last;
+    rewrite "^/{{install.path }}(.*)$" /{{install.path }}/ojs/{{ install.path }}$1 last; 
   
     # Send PHP scripts to PHP-FRPM
     location ~ ^(.+\.php)(/.*)?$ {
-  
+
       fastcgi_split_path_info ^(.+\.php)(/.*)$;
       # \1 becomes $fastcgi_script_name
       # \2 becomes $fastcgi_path_info
@@ -30,23 +36,19 @@
       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
       fastcgi_param PATH_TRANSLATED $document_root$fastcgi_script_name;
     
-      # TODO check to see if this is still required since we don't
-      # need try_files anymore  
-      # fastcgi_param PATH_INFO $1;
+      # set PATH_INFO to work around nginx munging it
       fastcgi_param PATH_INFO $2; 
-   
-      # DEBUG - delete
-      add_header X-debug "Front controller";    
-      add_header X-pathinfo "X$2";
-      add_header X-scriptfilename "X$document_root$fastcgi_script_name";
+
     }
   
     # Route clean URLs to front controller. 
     location  ~ ^(.*)/ojs/?(.*)$ {
-      # DEBUG - delete 
-      add_header X-debug "Router Match $1";
       try_files $uri $uri/ $1/ojs/index.php/$2$is_args$args;
     }
   }
-
 {% endfor %}
+
+{% if item.nginx is defined %}
+  # Journal-specific config
+  {{ item.nginx | indent(2) }}
+{% endif %}

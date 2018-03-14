@@ -1,5 +1,17 @@
 ---
 
+- name: Get OJS
+  get_url:
+    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
+    dest: "/tmp/{{ ojs_tarball }}"
+    checksum: "md5:{{ ojs_md5sum }}"
+
+- name: Get OJS Bootstrap theme
+  get_url:
+    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
+    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
+    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
+
 - name: Calculate OJS install paths
   set_fact: 
     ojs_calculated_paths: 
@@ -46,8 +58,7 @@
     - "{{ ojs_sites }}" 
     - installs
 
-
-- name: Unarchive OJS
+- name: Deploy OJS code
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
     dest: "{{item}}"
@@ -56,6 +67,17 @@
     group: nginx
     copy: no
   with_items: "{{ojs_calculated_paths }}"
+
+- name: Deploy OJS Bootstrap Theme
+  unarchive:
+    src: "/tmp/{{ ojs_bootstrap_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins"
+    #creates:  ""
+    owner: nginx
+    group: nginx
+    copy: no
+  with_items: "{{ojs_calculated_paths }}"
+
 
 - name: Link ojs-$version directory to ojs
   file:
@@ -95,25 +117,27 @@
     state: link
   with_items: "{{ojs_calculated_paths }}"
 
-
-- name: Set default SELinux context for etc subdirectory
+- name: Set SELinux context for etc subdirectory
   command: >
     semanage fcontext -a -t httpd_config_t  "{{ item }}/etc(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
-- name: Set default SELinux context for ojs subdirectory
+- name: Set SELinux context for ojs subdirectory
   command: >
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/ojs-{{ ojs_version }}(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
+- name: Set SELinux context for public subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/public(/.*)?"
+  with_items: "{{ojs_calculated_paths }}"
 
-- name: Set default SELinux context for files subdirectory
+- name: Set  SELinux context for files subdirectory
   command: >
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/files(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
-
-- name: Restore default SELinux context for OJS
+- name: Apply SELinux context for OJS installs
   command: >
     restorecon -rv {{ item }}
   with_items: "{{ojs_calculated_paths }}"
