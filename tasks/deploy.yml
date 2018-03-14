@@ -96,18 +96,22 @@
   with_items: "{{ojs_calculated_paths }}"
 
 
-- name: Set default SELinux context for etc subdirectory
+- name: Set SELinux context for etc subdirectory
   command: >
     semanage fcontext -a -t httpd_config_t  "{{ item }}/etc(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
-- name: Set default SELinux context for ojs subdirectory
+- name: Set SELinux context for ojs subdirectory
   command: >
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/ojs-{{ ojs_version }}(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
+- name: Set SELinux context for public subdirectory
+  command: >
+    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/public(/.*)?"
+  with_items: "{{ojs_calculated_paths }}"
 
-- name: Set default SELinux context for files subdirectory
+- name: Set  SELinux context for files subdirectory
   command: >
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/files(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
