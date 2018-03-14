@@ -1,5 +1,11 @@
 ---
 
+- name: Get OJS
+  get_url:
+    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
+    dest: "/tmp/{{ ojs_tarball }}"
+    checksum: "md5:{{ ojs_md5sum }}"
+
 - name: Calculate OJS install paths
   set_fact: 
     ojs_calculated_paths: 
@@ -45,7 +51,6 @@
   with_subelements:
     - "{{ ojs_sites }}" 
     - installs
-
 
 - name: Unarchive OJS
   unarchive:
@@ -95,7 +100,6 @@
     state: link
   with_items: "{{ojs_calculated_paths }}"
 
-
 - name: Set SELinux context for etc subdirectory
   command: >
     semanage fcontext -a -t httpd_config_t  "{{ item }}/etc(/.*)?"
@@ -116,8 +120,7 @@
     semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/files(/.*)?"
   with_items: "{{ojs_calculated_paths }}"
 
-
-- name: Restore default SELinux context for OJS
+- name: Apply SELinux context for OJS installs
   command: >
     restorecon -rv {{ item }}
   with_items: "{{ojs_calculated_paths }}"

@@ -1,30 +1,21 @@
 ---
-# tasks file for OJS
 
+# Install OJS-specific requirements
 - include: yum.yml
   become: true
   tags: ojs_yum
 
+# Place supporting scripts and files          
 - include: assets.yml
   become: true
   tags: ojs_assets
 
-- include: get.yml
-  become: true
-  tags: ojs_get
-
+# Download and install OJS for sites          
 - include: deploy.yml
   become: true
   tags: ojs_deploy
 
-#- include: configure.yml
-  #become: true
-  #tags: ojs_configure
-
-#- include: install.yml
-  #become: true
-  #tags: ojs_install
-
+# Configure nginx for OJS sites
 - include: nginx.yml
   become: true
   tags: ojs_nginx
