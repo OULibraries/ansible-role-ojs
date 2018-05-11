@@ -15,6 +15,21 @@
     copy: no
   register: deploy_ojs_code  
 
+- name: Download  OJS Bootstrap Theme tarball
+  get_url:
+    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
+    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
+    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
+
+- name: Deploy OJS Bootstrap Theme
+  unarchive:
+    src: "/tmp/{{ ojs_bootstrap_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins"
+    creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
+    owner: nginx
+    group: nginx
+    copy: no
+
 # Run this block conditionally when new code is deployed           
 - name: Attach config and content dirs to app src
   block:
@@ -46,20 +61,6 @@
         state: link
   when: deploy_ojs_code.changed  
 
-- name: Download  OJS Bootstrap Theme tarball
-  get_url:
-    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
-    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
-    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
-
-- name: Deploy OJS Bootstrap Theme
-  unarchive:
-    src: "/tmp/{{ ojs_bootstrap_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins"
-    creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
-    owner: nginx
-    group: nginx
-    copy: no
 
 - name: Set SELinux context for etc subdirectory
   command: >
