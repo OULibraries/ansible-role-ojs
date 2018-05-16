@@ -84,7 +84,7 @@ allow_url_fopen = Off
 ; base_url[myJournal] = http://www.myUrl.com/myJournal
 ; base_url[myOtherJournal] = http://myOtherJournal.myUrl.com
 base_url[index] = "https://{{item.0.name}}/{{item.1.path}}/index"
-base_url[item.1.path] = "https://{{item.0.name}}/{{item.1.path}}"
+base_url[{{item.1.path}}] = "https://{{item.0.name}}/{{item.1.path}}"
 
 
 ; Generate RESTful URLs using mod_rewrite.  This requires the
