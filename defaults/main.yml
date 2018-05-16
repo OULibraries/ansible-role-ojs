@@ -14,3 +14,4 @@ ojs_bootstrap_url: "https://github.com/NateWr/bootstrap3/releases/download/1.1/"
 ojs_bootstrap_tarball: "bootstrap3-{{ ojs_bootstrap_version }}.tar.gz"
 
 ojs_parent_dir: "/srv"
+ojs_envelope_sender: "lib-noreply@ou.edu"
