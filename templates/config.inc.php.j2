@@ -32,10 +32,10 @@ installed = On
 base_url = "https://{{item.0.name}}/{{item.1.path}}/ojs"
 
 ; Session cookie name
-session_cookie_name = OJSSID
+session_cookie_name = OJSSID-sok-{{item.1.path}}
 
 ; Session cookie path; if not specified, defaults to the detected base path
-session_cookie_path = /{{ item.1.path }}
+session_cookie_path = /
 
 ; Number of days to save login cookie for if user selects to remember
 ; (set to 0 to force expiration at end of current session)
@@ -387,7 +387,8 @@ result_cache_hours = 1
 oai = On
 
 ; OAI Repository identifier
-repository_id = "ojs2.{{item.0.name}}"
+repository_id = {{ item.1.oai_id | default(item.1.path + '.'+ item.0.name) }}"
+
 
 ; Maximum number of records per request to serve via OAI
 oai_max_records = 100
