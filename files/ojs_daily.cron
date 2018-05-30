@@ -3,7 +3,7 @@
 PATH=/opt/oulib/ojs/bin:/usr/local/bin:/usr/bin:/bin:/sbin:$PATH
 
 printf "Searching for OJS sites.\n"
-find -L /srv -maxdepth 1 -mindepth 1 -type d 2>/dev/null | while read -r SITEPATH ; do
+find -L /srv -maxdepth 3 -mindepth 3 -wholename */sites/* -type d 2>/dev/null | while read -r SITEPATH ; do
   # Check for config.inc.php
   stat ${SITEPATH}/ojs/config.inc.php &>/dev/null
   if [ "$?" -eq "0" ]; then
