@@ -42,7 +42,7 @@ fi
 echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
 # Tarballs include the $SITE folder, so we need to strip that off
-# whene extracting
+# when extracting
 sudo -u apache tar -xvf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
 
 echo "Files from snapshot restored." 
