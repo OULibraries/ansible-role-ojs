@@ -36,6 +36,6 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 ojs_dump.sh $SITEPATH
 
 # Tar files required to rebuild, with $SITE as TLD inside tarball. 
-sudo -u apache tar -czf  "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
+sudo -u nginx tar -czf  "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
 
 echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"
