@@ -48,4 +48,4 @@
 
 # Deploy source code and connect to persistent code and config created above
 - include: deploy_src.yml    
-  with_items: "{{ojs_calculated_paths }}"  
+  with_items: "{{ojs_calculated_paths|default([]) }}"  
