@@ -24,7 +24,7 @@
 - name: Deploy OJS Bootstrap Theme
   unarchive:
     src: "/tmp/{{ ojs_bootstrap_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
     creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
     owner: nginx
     group: nginx
