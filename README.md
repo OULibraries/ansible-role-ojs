@@ -5,10 +5,7 @@ Open Journal Systems for OU Libraries
 
 Requirements
 ------------
-
-CentOS 7.x
-Apache
-MariaDB
+No special reqiurements
 
 Role Variables
 --------------
@@ -18,10 +15,11 @@ A description of the settable variables for this role should go here, including 
 Dependencies
 ------------
 
+
 ```
 - src: https://github.com/OULibraries/ansible-role-apache2
-  version: v2016-08-10.0
-  name: OULibraries.apache2
+  version: v2018-04-24.0
+  name: OULibraries.nginx
 
 - src: https://github.com/OULibraries/ansible-role-centos7
   version: v2016-08-24.0
