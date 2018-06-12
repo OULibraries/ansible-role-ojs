@@ -50,5 +50,5 @@ License
 
 Author Information
 ------------------
-
 Jason Sherman
+Logan Cox
