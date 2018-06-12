@@ -24,6 +24,6 @@ echo "Dumping $SITEPATH database"
 SITE=$(basename "$SITEPATH")
 
 ## Perform sql-dump
-sudo -u apache bash -c "mysqldump -h $PKPDBHOST -u $PKPUSER -p$PKPPASS $PKPDB > $SITEPATH/db/ojs_${SITE}_dump.sql"
+sudo -u nginx bash -c "mysqldump -h $PKPDBHOST -u $PKPUSER -p$PKPPASS $PKPDB  --result-file=$SITEPATH/db/ojs_${SITE}_dump.sql"
 
 echo "Finished dumping $SITEPATH database."

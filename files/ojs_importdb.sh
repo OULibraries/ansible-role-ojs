@@ -24,7 +24,7 @@ echo "Importing $SITEPATH database"
 SITE=$(basename "$SITEPATH")
 
 ## Import sql-dump
-sudo -u apache bash -c "mysql -h $PKPDBHOST -u $PKPUSER -p$PKPPASS -D $PKPDB < $SITEPATH/db/ojs_${SITE}_dump.sql"
+sudo -u nginx bash -c "mysql -h $PKPDBHOST -u $PKPUSER -p$PKPPASS -D $PKPDB < $SITEPATH/db/ojs_${SITE}_dump.sql"
 
 echo "Finished importing $SITEPATH database."
 

@@ -1,17 +1,5 @@
 ---
-
-- name: Get OJS
-  get_url:
-    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
-    dest: "/tmp/{{ ojs_tarball }}"
-    checksum: "md5:{{ ojs_md5sum }}"
-
-- name: Get OJS Bootstrap theme
-  get_url:
-    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
-    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
-    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
-
+# Create persistent code and config for journals
 - name: Calculate OJS install paths
   set_fact: 
     ojs_calculated_paths: 
@@ -51,99 +39,13 @@
     src: config.inc.php.j2
     dest: "{{ ojs_parent_dir }}/{{ item.0.name }}/sites/{{item.1.path }}/etc/config.inc.php"
     mode: 0644
-    force: no        
+    backup: yes
     owner: nginx
     group: nginx
   with_subelements:
     - "{{ ojs_sites }}" 
     - installs
 
-- name: Deploy OJS code
-  unarchive:
-    src: "/tmp/{{ ojs_tarball }}"
-    dest: "{{item}}"
-    creates:  "{{ item }}/ojs-{{ ojs_version }}/README.md"
-    owner: nginx
-    group: nginx
-    copy: no
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Deploy OJS Bootstrap Theme
-  unarchive:
-    src: "/tmp/{{ ojs_bootstrap_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
-    #creates:  ""
-    owner: nginx
-    group: nginx
-    copy: no
-  with_items: "{{ojs_calculated_paths }}"
-
-
-- name: Link ojs-$version directory to ojs
-  file:
-    src: "{{ item }}/ojs-{{ ojs_version }}"
-    path: "{{ item }}/ojs"
-    state: link
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Copy files from ojs/public to public
-  command: >
-    rsync --recursive --times --ignore-existing "{{ item }}/ojs-{{ ojs_version }}/public/" "{{ item }}/public"
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Remove public from ojs dist folder
-  file:
-    path: "{{ item }}/ojs-{{ ojs_version }}/public"
-    state: absent
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Add link to public folder
-  file:
-    src: "{{ item }}/public"      
-    path: "{{ item }}/ojs-{{ ojs_version }}/public"
-    state: link
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Remove default config.inc.php from ojs-$version folder
-  file:
-    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
-    state: absent
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Add link to config.inc.php to ojs-$version dir
-  file:
-    src: "{{ item }}/etc/config.inc.php"
-    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
-    state: link
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Set SELinux context for etc subdirectory
-  command: >
-    semanage fcontext -a -t httpd_config_t  "{{ item }}/etc(/.*)?"
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Set SELinux context for ojs subdirectory
-  command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/ojs-{{ ojs_version }}(/.*)?"
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Set SELinux context for public subdirectory
-  command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/public(/.*)?"
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Set  SELinux context for files subdirectory
-  command: >
-    semanage fcontext -a -t httpd_sys_rw_content_t  "{{ item }}/files(/.*)?"
-  with_items: "{{ojs_calculated_paths }}"
-
-- name: Apply SELinux context for OJS installs
-  command: >
-    restorecon -rv {{ item }}
-  with_items: "{{ojs_calculated_paths }}"
-
-
-
-
-
-
+# Deploy source code and connect to persistent code and config created above
+- include: deploy_src.yml    
+  with_items: "{{ojs_calculated_paths }}"  

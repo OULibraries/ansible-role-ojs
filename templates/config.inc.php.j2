@@ -32,10 +32,10 @@ installed = On
 base_url = "https://{{item.0.name}}/{{item.1.path}}/ojs"
 
 ; Session cookie name
-session_cookie_name = OJSSID
+session_cookie_name = OJSSID-sok-{{item.1.path}}
 
 ; Session cookie path; if not specified, defaults to the detected base path
-session_cookie_path = /{{ item.1.path }}
+session_cookie_path = /
 
 ; Number of days to save login cookie for if user selects to remember
 ; (set to 0 to force expiration at end of current session)
@@ -84,7 +84,7 @@ allow_url_fopen = Off
 ; base_url[myJournal] = http://www.myUrl.com/myJournal
 ; base_url[myOtherJournal] = http://myOtherJournal.myUrl.com
 base_url[index] = "https://{{item.0.name}}/{{item.1.path}}/index"
-base_url[item.1.path] = "https://{{item.0.name}}/{{item.1.path}}"
+base_url[{{item.1.path}}] = "https://{{item.0.name}}/{{item.1.path}}"
 
 
 ; Generate RESTful URLs using mod_rewrite.  This requires the
@@ -315,15 +315,15 @@ allowed_html = "a[href|target|title],em,strong,cite,code,ul,ol,li[class],dl,dt,d
 
 ; Allow envelope sender to be specified
 ; (may not be possible with some server configurations)
-; allow_envelope_sender = Off
+allow_envelope_sender = On
 
 ; Default envelope sender to use if none is specified elsewhere
-; default_envelope_sender = my_address@my_host.com
+ default_envelope_sender = {{ ojs_envelope_sender }}
 
 ; Force the default envelope sender (if present)
 ; This is useful if setting up a site-wide noreply address
 ; The reply-to field will be set with the reply-to or from address.
-; force_default_envelope_sender = Off
+force_default_envelope_sender = On
 
 ; Amount of time required between attempts to send non-editorial emails
 ; in seconds. This can be used to help prevent email relaying via OJS.
@@ -387,7 +387,8 @@ result_cache_hours = 1
 oai = On
 
 ; OAI Repository identifier
-repository_id = "ojs2.{{item.0.name}}"
+repository_id = {{ item.1.oai_id | default(item.1.path + '.'+ item.0.name) }}"
+
 
 ; Maximum number of records per request to serve via OAI
 oai_max_records = 100
