@@ -6,3 +6,5 @@ PKPDBHOST=`cat $PKPCFG | grep ^host | cut -d "=" -f 2 | xargs`
 PKPDB=`cat $PKPCFG | grep ^name | cut -d "=" -f 2 | xargs`
 PKPUSER=`cat $PKPCFG | grep ^username | cut -d "=" -f 2 | xargs`
 PKPPASS=`cat $PKPCFG | grep ^password | cut -d "=" -f 2 | xargs`
+# Directory for S3 snapshots
+OJS_S3_SNAPSHOT_DIR="{{ ojs_s3_snapshot_base_dir }}$(/opt/oulib/aws/bin/ec2_get_arn.sh)"
