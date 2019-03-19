@@ -34,8 +34,15 @@ echo "Making ${DOW} snapshot for $SITEPATH"
 
 # Make a db backup in case the latest one is old
 ojs_dump.sh $SITEPATH
+# If we don't have a target s3 bucket, use the local filesystem.
+if [ -z "${OJS_S3_SNAPSHOT_DIR}" ]; then
+ # Tar files required to rebuild, with $SITE as TLD inside tarball.
+    sudo -u nginx tar -czf  "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
 
-# Tar files required to rebuild, with $SITE as TLD inside tarball. 
-sudo -u nginx tar -czf  "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" -C ${PKPPARENT}/ "${SITE}/db" "${SITE}/etc" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public"
+# Otherwise use aws s3
+else
+    SNAPSHOTDIR=${OJS_S3_SNAPSHOT_DIR}
+    sudo -u nginx tar -cf - -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" --sse
+fi
 
 echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"
