@@ -42,7 +42,7 @@ if [ -z "${OJS_S3_SNAPSHOT_DIR}" ]; then
 # Otherwise use aws s3
 else
     SNAPSHOTDIR=${OJS_S3_SNAPSHOT_DIR}
-    sudo -u nginx tar -cf - -C /srv/ "${SITE}/etc" "${SITE}/db" "${SITE}/default/files" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" --sse
+    sudo -u nginx tar -cf - -C ${PKPPARENT} "${SITE}/etc" "${SITE}/db" "${SITE}/files" "${SITE}/${OJSDIR}" "${SITE}/public" | gzip --stdout --best | aws s3 cp - "$SNAPSHOTDIR/$SITE.$DOW.tar.gz" --sse
 fi
 
 echo "Snapshot created at ${SNAPSHOTDIR}/${SITE}.${DOW}.tar.gz"
