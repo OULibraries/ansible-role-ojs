@@ -31,8 +31,8 @@
     recurse: yes
 
 - name: Install ojs config
-  copy:
-    src: ojs_conf.sh
+  template:
+    src: ojs_conf.sh.j2
     dest: /opt/oulib/ojs/etc/ojs_conf.sh
     owner: root
     group: wheel
