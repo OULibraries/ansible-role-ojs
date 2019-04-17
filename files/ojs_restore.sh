@@ -43,7 +43,7 @@ echo "Restoring ${DOW} snapshot of ${SITEPATH}."
 
 # Tarballs include the $SITE folder, so we need to strip that off
 # when extracting
-sudo -u apache tar -xvf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
+sudo -u nginx tar -xvf  "${SNAPSHOTFILE}" -C "${SITEPATH}" --strip-components=1 --no-overwrite-dir
 
 echo "Files from snapshot restored." 
 echo "Now run ojs_importdb.sh ${SITEPATH} to restore the db for the site."
