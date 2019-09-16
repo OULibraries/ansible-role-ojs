@@ -45,6 +45,8 @@
     location  ~ ^(.*)/ojs/?(.*)$ {
       try_files $uri $uri/ $1/ojs/index.php/$2$is_args$args;
     }
+ 
+    # Try files for public directory
     location ~ ^(.*)/public/site/?(.*)$ {
       try_files $uri $1/ojs/public/site/$2;
     }
