@@ -44,7 +44,7 @@ session_lifetime = 30
 ; Enable support for running scheduled tasks
 ; Set this to On if you have set up the scheduled tasks script to
 ; execute periodically
-scheduled_tasks = Off
+scheduled_tasks = On
 
 ; Site time zone
 ; Please refer to lib/pkp/registry/timeZones.xml for a full list of supported
