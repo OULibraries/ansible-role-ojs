@@ -17,3 +17,4 @@ ojs_parent_dir: "/srv"
 ojs_envelope_sender: "lib-noreply@ou.edu"
 ojs_recaptcha_public_key: "your_public_key"
 ojs_recaptcha_private_key: "your_public_key"
+ojs_recaptcha_bool: off
