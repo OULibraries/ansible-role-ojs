@@ -45,7 +45,9 @@
   with_subelements:
     - "{{ ojs_sites }}" 
     - installs
+  tags: site_config
 
 # Deploy source code and connect to persistent code and config created above
 - include: deploy_src.yml    
   with_items: "{{ojs_calculated_paths|default([]) }}"  
+  tags: deploy_src
