@@ -371,7 +371,7 @@ result_cache_hours = 1
 
 ; PDF
 ; index[application/pdf] = "/usr/bin/pstotext -enc UTF-8 -nopgbrk %s - | /usr/bin/tr '[:cntrl:]' ' '"
-; index[application/pdf] = "/usr/bin/pdftotext -enc UTF-8 -nopgbrk %s - | /usr/bin/tr '[:cntrl:]' ' '"
+index[application/pdf] = "/usr/bin/pdftotext -enc UTF-8 -nopgbrk %s - | /usr/bin/tr '[:cntrl:]' ' '"
 
 ; PostScript
 ; index[application/postscript] = "/usr/bin/pstotext -enc UTF-8 -nopgbrk %s - | /usr/bin/tr '[:cntrl:]' ' '"
@@ -418,13 +418,13 @@ page_links = 10
 [captcha]
 
 ; Whether or not to enable ReCaptcha
-recaptcha = off
+recaptcha = {{ ojs_recaptcha_bool }}
 
 ; Public key for reCaptcha (see http://www.google.com/recaptcha)
-recaptcha_public_key = your_public_key
+recaptcha_public_key = {{ ojs_recaptcha_public_key }}
 
 ; Private key for reCaptcha (see http://www.google.com/recaptcha)
-recaptcha_private_key = your_private_key
+recaptcha_private_key = {{ ojs_recaptcha_private_key }}
 
 ; Whether or not to use Captcha on user registration
 captcha_on_register = on
