@@ -1,0 +1,37 @@
+---
+# Run OJS Upgrade Tools and DB Scripts
+
+- name: Mark the site as uninstalled in config.inc.php
+  replace:
+    dest: "/srv/journals.shareok.org/sites/{{ item.1.path }}/etc/config.inc.php"
+    regexp: >
+      ^installed = On$
+    replace: "installed = Off\n"
+  with_subelements:
+   - "{{ ojs_sites }}"
+   - installs
+  tags: mark_unsafe
+ 
+
+- name: Run PHP Upgrade Utility
+  shell: "{{sclphp_location}} /srv/journals.shareok.org/sites/{{ item.1.path }}/ojs/tools/upgrade.php upgrade"
+  with_subelements:
+   - "{{ ojs_sites }}"
+   - installs
+  tags: php_upgrade
+
+- name: Mark the site as installed in config.inc.php
+  replace:
+    dest: "/srv/journals.shareok.org/sites/{{ item.1.path }}/etc/config.inc.php"
+    regexp: >
+      ^installed = Off$
+    replace: "installed = On\n"
+  with_subelements:
+   - "{{ ojs_sites }}"
+   - installs
+  tags: mark_safe
+
+- name: Restart PHP
+  systemd:
+    state: restarted
+    name: "{{ sclphp_version }}-php-fpm"
