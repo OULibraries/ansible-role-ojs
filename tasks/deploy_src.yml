@@ -59,6 +59,9 @@
         src: "{{ item }}/ojs-{{ ojs_version }}"
         path: "{{ item }}/ojs"
         state: link
+    - name: Copy Themes from previous install
+      command: >
+        rsync --ignore-existing --recursive "{{ ojs_code.stat.lnk_source }}/plugins/themes/" "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/"
   when: deploy_ojs_code.changed  
 
 
