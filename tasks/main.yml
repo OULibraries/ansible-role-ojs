@@ -1,29 +1,31 @@
 ---
 
-# Install OJS-specific requirements
-- include: pre_tasks.yml
-  become: true
-  tags: [ ojs_pre_tasks, upgrade ] 
+- name: Get package facts
+  package_facts:
+    manager: rpm
 
-- include: yum.yml
-  become: true
-  tags: ojs_yum
-
-# Place supporting scripts and files          
-- include: assets.yml
-  become: true
-  tags: ojs_assets
-
-# Download and install OJS for sites          
-- include: deploy.yml
-  become: true
-  tags: [ ojs_deploy, upgrade ]
-
-# Configure nginx for OJS sites
-- include: nginx.yml
-  become: true
-  tags: ojs_nginx
-
-- include: upgrade.yml
-  become: true
-  tags: [ never, upgrade ]
+- name: Run playbook
+  block: 
+  - include: yum.yml
+    become: true
+    tags: ojs_yum
+  
+  # Place supporting scripts and files          
+  - include: assets.yml
+    become: true
+    tags: ojs_assets
+  
+  # Download and install OJS for sites          
+  - include: deploy.yml
+    become: true
+    tags: [ ojs_deploy, upgrade ]
+  
+  # Configure nginx for OJS sites
+  - include: nginx.yml
+    become: true
+    tags: ojs_nginx
+  
+  - include: upgrade.yml
+    become: true
+    tags: [ never, upgrade ]
+  when: "ansible_facts.packages['{{ min_php_version }}'] is defined"
