@@ -1,10 +1,4 @@
 ---
-- name: Download OJS tarball
-  get_url:
-    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
-    dest: "/tmp/{{ ojs_tarball }}"
-    checksum: "md5:{{ ojs_md5sum }}"
-
 - name: Deploy OJS code to site
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
@@ -14,12 +8,6 @@
     group: nginx
     copy: no
   register: deploy_ojs_code  
-
-- name: Download  OJS Bootstrap Theme tarball
-  get_url:
-    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
-    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
-    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
 
 - name: Deploy OJS Bootstrap Theme
   unarchive:

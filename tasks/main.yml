@@ -1,6 +1,10 @@
 ---
 
 # Install OJS-specific requirements
+- include: pre_tasks.yml
+  become: true
+  tags: [ ojs_pre_tasks, upgrade ] 
+
 - include: yum.yml
   become: true
   tags: ojs_yum

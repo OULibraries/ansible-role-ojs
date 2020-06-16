@@ -1,0 +1,17 @@
+---
+
+# Check PHP Requirements
+
+# Download required packages and tarballs
+- name: Download OJS tarball
+  get_url:
+    url: "{{ ojs_download_url }}{{ ojs_tarball }}"
+    dest: "/tmp/{{ ojs_tarball }}"
+    checksum: "md5:{{ ojs_md5sum }}"
+
+- name: Download  OJS Bootstrap Theme tarball
+  get_url:
+    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
+    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
+    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
+
