@@ -1,31 +1,32 @@
 ---
 
-- name: Get package facts
-  package_facts:
-    manager: rpm
+- set_fact:
+    sn: "{{ sclphp_version | regex_replace('rh-php', '') }}"
+    mn: "{{ min_php_version | regex_replace('rh-php', '') }}"
 
-- name: Run playbook
-  block: 
-  - include: yum.yml
-    become: true
-    tags: ojs_yum
-  
-  # Place supporting scripts and files          
-  - include: assets.yml
-    become: true
-    tags: ojs_assets
-  
-  # Download and install OJS for sites          
-  - include: deploy.yml
-    become: true
-    tags: [ ojs_deploy, upgrade ]
-  
-  # Configure nginx for OJS sites
-  - include: nginx.yml
-    become: true
-    tags: ojs_nginx
-  
-  - include: upgrade.yml
-    become: true
-    tags: [ never, upgrade ]
-  when: "ansible_facts.packages['{{ min_php_version }}'] is defined"
+- fail:
+    msg: "Minimum PHP Requirement not met: =>{{ min_php_version }}"
+  when: sn is version(mn, "<")
+
+- include: yum.yml
+  become: true
+  tags: ojs_yum
+
+# Place supporting scripts and files          
+- include: assets.yml
+  become: true
+  tags: ojs_assets
+
+# Download and install OJS for sites          
+- include: deploy.yml
+  become: true
+  tags: [ ojs_deploy, upgrade ]
+
+# Configure nginx for OJS sites
+- include: nginx.yml
+  become: true
+  tags: ojs_nginx
+
+- include: upgrade.yml
+  become: true
+  tags: [ never, upgrade ]
