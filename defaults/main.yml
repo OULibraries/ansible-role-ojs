@@ -3,7 +3,7 @@
 
 # We'll end up fetching
 # {{ ojs_download_url }}{{ ojs_tarball }}
-sclphp_version: "rh-php72"
+min_php_version: "72"
 sclphp_location: "/opt/rh/{{sclphp_version}}/root/usr/bin/php"
 ojs_version: "3.2.0"
 ojs_md5sum: "90c9a9da9025a5a2878c740ce6df3d2c"
