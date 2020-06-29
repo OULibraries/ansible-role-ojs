@@ -1,4 +1,19 @@
 ---
+- name: Check for current OJS code to site
+  stat:
+    path: "{{ item }}/ojs"
+  register: ojs_code
+
+- name: Set current version
+  set_fact:
+   current_version: "{{ ojs_code.stat.lnk_source | basename | regex_replace('ojs-', '') }}"
+  when: ojs_code.stat.lnk_source is defined
+
+- name: Clean current version
+  set_fact:
+   current_version: "{{ current_version.split('-') | join('.') }}"
+  when: ojs_code.stat.lnk_source is defined
+
 - name: Deploy OJS code to site
   unarchive:
     src: "/tmp/{{ ojs_tarball }}"
@@ -24,6 +39,9 @@
     - name: Copy files from ojs/public to public
       command: >
         rsync --recursive --times --ignore-existing "{{ item }}/ojs-{{ ojs_version }}/public/" "{{ item }}/public"
+    - name: Copy Themes from previous install
+      command: >
+        rsync --ignore-existing --recursive "{{ ojs_code.stat.lnk_source }}/plugins/themes/" "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/"
     - name: Remove public from ojs dist folder
       file:
         path: "{{ item }}/ojs-{{ ojs_version }}/public"
@@ -47,10 +65,7 @@
         src: "{{ item }}/ojs-{{ ojs_version }}"
         path: "{{ item }}/ojs"
         state: link
-    - name: Copy Themes from previous install
-      command: >
-        rsync --ignore-existing --recursive "{{ ojs_code.stat.lnk_source }}/plugins/themes/" "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/"
-  when: deploy_ojs_code.changed  
+      when: deploy_ojs_code.changed  
 
 
 - name: Set SELinux context for etc subdirectory

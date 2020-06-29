@@ -20,13 +20,14 @@
 # Download and install OJS for sites          
 - include: deploy.yml
   become: true
-  tags: [ ojs_deploy, upgrade ]
+  tags: ojs_deploy
 
 # Configure nginx for OJS sites
 - include: nginx.yml
   become: true
   tags: ojs_nginx
 
+# Run upgrade tool 
 - include: upgrade.yml
   become: true
-  tags: [ never, upgrade ]
+  tags: upgrade
