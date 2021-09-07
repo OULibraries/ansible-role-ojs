@@ -1,9 +1,25 @@
 ---
+#- name: Check for current OJS code to site
+#  stat:
+#    path: "{{ item }}/ojs"
+#  register: ojs_code
+#
+#- name: Set current version
+#  set_fact:
+#   current_version: "{{ ojs_code.stat.lnk_source | basename | regex_replace('ojs-', '') }}"
+#  when: ojs_code.stat.lnk_source is defined
+#
+#- name: Clean current version
+#  set_fact:
+#   current_version: "{{ current_version.split('-') | join('.') }}"
+#  when: ojs_code.stat.lnk_source is defined
+
 - name: Download OJS tarball
   get_url:
     url: "{{ ojs_download_url }}{{ ojs_tarball }}"
     dest: "/tmp/{{ ojs_tarball }}"
     checksum: "md5:{{ ojs_md5sum }}"
+  check_mode: no 
 
 - name: Deploy OJS code to site
   unarchive:
@@ -13,24 +29,9 @@
     owner: nginx
     group: nginx
     copy: no
-  register: deploy_ojs_code  
+  register: deploy_ojs_code
 
-- name: Download  OJS Bootstrap Theme tarball
-  get_url:
-    url: "{{ ojs_bootstrap_url }}{{ ojs_bootstrap_tarball }}"
-    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
-    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
-
-- name: Deploy OJS Bootstrap Theme
-  unarchive:
-    src: "/tmp/{{ ojs_bootstrap_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
-    creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
-    owner: nginx
-    group: nginx
-    copy: no
-
-# Run this block conditionally when new code is deployed           
+# Run this block conditionally when new code is deployed
 - name: Attach config and content dirs to app src
   block:
     - name: Copy files from ojs/public to public
@@ -42,7 +43,7 @@
         state: absent
     - name: Add link to public folder
       file:
-        src: "{{ item }}/public"      
+        src: "{{ item }}/public"
         path: "{{ item }}/ojs-{{ ojs_version }}/public"
         state: link
     - name: Remove default config.inc.php from ojs-$version folder
@@ -59,8 +60,17 @@
         src: "{{ item }}/ojs-{{ ojs_version }}"
         path: "{{ item }}/ojs"
         state: link
-  when: deploy_ojs_code.changed  
+  when: deploy_ojs_code.changed
 
+# TODO Is this conditional needed?
+#
+#  when: ojs_code.stat.lnk_source is defined and current_version is version( ojs_version, '<')
+#
+# TODO should we copy themes?
+#
+#- name: Copy Themes from previous install
+#  command: >
+#  rsync --ignore-existing --recursive "{{ ojs_code.stat.lnk_source }}/plugins/themes/" "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/"
 
 - name: Set SELinux context for etc subdirectory
   command: >
@@ -81,3 +91,6 @@
 - name: Apply SELinux context for OJS installs
   command: >
     restorecon -rv {{ item }}
+
+
+

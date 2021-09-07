@@ -37,7 +37,7 @@
       fastcgi_param PATH_TRANSLATED $document_root$fastcgi_script_name;
     
       # set PATH_INFO to work around nginx munging it
-      fastcgi_param PATH_INFO $2 if_not_empty;; 
+      fastcgi_param PATH_INFO $2 if_not_empty; 
 
     }
   

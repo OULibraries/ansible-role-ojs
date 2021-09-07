@@ -1,0 +1,29 @@
+---
+# Run OJS Upgrade Tools and DB Scripts
+
+- name: Mark the site as uninstalled in config.inc.php
+  replace:
+    dest: "{{ item }}/etc/config.inc.php"
+    regexp: >
+      ^installed = On$
+    replace: "installed = Off\n"
+  tags: mark_unsafe, ojs_upgrade
+ 
+
+- name: Run PHP Upgrade Utility
+  shell: "{{sclphp_location}} {{ item }}/ojs/tools/upgrade.php upgrade"
+  tags: php_upgrade, ojs_upgrade
+
+- name: Mark the site as installed in config.inc.php
+  replace:
+    dest: "{{ item }}/etc/config.inc.php"
+    regexp: >
+      ^installed = Off$
+    replace: "installed = On\n"
+  tags: mark_safe, ojs_upgrade
+
+- name: Restart PHP
+  systemd:
+    state: restarted
+    name: "{{ sclphp_version }}-php-fpm"
+  tags: ojs_upgrade

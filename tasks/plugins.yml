@@ -1,0 +1,37 @@
+---
+
+
+
+- name: Download  OJS Bootstrap Theme tarball
+  get_url:
+    url: "{{ ojs_bootstrap_url }}/{{ ojs_bootstrap_tarball }}"
+    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
+    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
+  check_mode: no
+
+- name: Deploy OJS Bootstrap Theme
+  unarchive:
+    src: "/tmp/{{ ojs_bootstrap_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
+    creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
+    owner: nginx
+    group: nginx
+    copy: no
+   
+- name: Download  OJS Crossref Reference Linking Plugin tarball
+  get_url:
+    url: "https://github.com/pkp/crossrefReferenceLinking/releases/download/v1_0_1-1/crossrefReferenceLinking-v1_0_1-1.tar.gz"
+    dest: "/tmp/crossref.tar.gz"
+    checksum: "md5:11e8c5f25350d334054cc57036ab5512"
+  check_mode: no
+
+- name: Deploy OJS Crossref Reference Linking Plugin
+  unarchive:
+    src: "/tmp/crossref.tar.gz"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/generic"
+    owner: nginx
+    group: nginx
+    copy: no
+
+
+
