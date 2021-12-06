@@ -1,6 +1,8 @@
 ---
 # defaults file for OJS
 
+ojs_do_upgrade: false
+
 # We'll end up fetching
 # {{ ojs_download_url }}{{ ojs_tarball }}
 ojs_version: "3.1.0-1"
