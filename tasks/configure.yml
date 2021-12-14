@@ -7,21 +7,21 @@
 
 - name: Set upload_max_filesize
   replace:
-    dest: /etc/php.ini
+    dest: /etc/opt/rh/rh-php73/php.ini 
     regexp: >
       ^upload_max_filesize = 2M$
-    replace: "upload_max_filesize = 20M"
+    replace: "upload_max_filesize = 64M"
 
 - name: Set post_max_size
   replace:
-    dest: /etc/php.ini
+    dest: /etc/opt/rh/rh-php73/php.ini
     regexp: >
       ^post_max_size = 8M$
-    replace: "post_max_size = 24M"
+    replace: "post_max_size = 68M"
 
 - name: Set PHP timezone
   replace:
-    dest: /etc/php.ini
+    dest: /etc/opt/rh/rh-php73/php.ini
     regexp: >
       ^;date.timezone =$
     replace: "date.timezone = America/Chicago"
