@@ -21,7 +21,7 @@
 
 - name: Set PHP timezone
   replace:
-    dest: /etc/opt/rh/rh-php73/php.ini
+    dest: "/etc/opt/rh/{{ sclphp_version }}/php.ini"
     regexp: >
       ^;date.timezone =$
     replace: "date.timezone = America/Chicago"
