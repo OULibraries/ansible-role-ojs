@@ -32,35 +32,43 @@
   register: deploy_ojs_code
 
 # Run this block conditionally when new code is deployed
-- name: Attach config and content dirs to app src
-  block:
-    - name: Copy files from ojs/public to public
-      command: >
-        rsync --recursive --times --ignore-existing "{{ item }}/ojs-{{ ojs_version }}/public/" "{{ item }}/public"
-    - name: Remove public from ojs dist folder
-      file:
-        path: "{{ item }}/ojs-{{ ojs_version }}/public"
-        state: absent
-    - name: Add link to public folder
-      file:
-        src: "{{ item }}/public"
-        path: "{{ item }}/ojs-{{ ojs_version }}/public"
-        state: link
-    - name: Remove default config.inc.php from ojs-$version folder
-      file:
-        path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
-        state: absent
-    - name: Add link to config.inc.php to ojs-$version dir
-      file:
-        src: "{{ item }}/etc/config.inc.php"
-        path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
-        state: link
-    - name: Link ojs-$version directory to ojs
-      file:
-        src: "{{ item }}/ojs-{{ ojs_version }}"
-        path: "{{ item }}/ojs"
-        state: link
+- name: Copy files from ojs/public to public
+  command: >
+    rsync --recursive --times --ignore-existing "{{ item }}/ojs-{{ ojs_version }}/public/" "{{ item }}/public"
   when: deploy_ojs_code.changed
+
+- name: Remove public from ojs dist folder
+  file:
+    path: "{{ item }}/ojs-{{ ojs_version }}/public"
+    state: absent
+
+- name: Remove default config.inc.php from ojs-$version folder
+  file:
+    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
+    state: absent    
+ 
+- name: Add link to public folder
+  file:
+    src: "{{ item }}/public"
+    path: "{{ item }}/ojs-{{ ojs_version }}/public"
+    state: link
+
+- name: Remove default config.inc.php from ojs-$version folder
+  file:
+    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
+    state: absent
+
+- name: Add link to config.inc.php to ojs-$version dir
+  file:
+    src: "{{ item }}/etc/config.inc.php"
+    path: "{{ item }}/ojs-{{ ojs_version }}/config.inc.php"
+    state: link
+
+- name: Link ojs-$version directory to ojs
+  file:
+    src: "{{ item }}/ojs-{{ ojs_version }}"
+    path: "{{ item }}/ojs"
+    state: link
 
 # TODO Is this conditional needed?
 #
