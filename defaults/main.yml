@@ -5,14 +5,14 @@ ojs_do_upgrade: false
 
 # We'll end up fetching
 # {{ ojs_download_url }}{{ ojs_tarball }}
-ojs_version: "3.1.0-1"
-ojs_md5sum: "fcb665e19ae25c204c3ddc7efa86d232"
+ojs_version: "3.3.0-11"
+ojs_md5sum: "a82b8c37afa9bb7b378bf2d7865c5e86"
 ojs_download_url: "http://pkp.sfu.ca/ojs/download/"
 ojs_tarball: "ojs-{{ ojs_version }}.tar.gz"
 
-ojs_bootstrap_version: "v1.1.0.0"
-ojs_bootstrap_md5sum: "ed67d475f7a59d46387b5bfa1a8a2a28"
-ojs_bootstrap_url: "https://github.com/NateWr/bootstrap3/releases/download/1.1/"
+ojs_bootstrap_version: "v3_2_0-4"
+ojs_bootstrap_md5sum: "2cd69477a80252c24c6124e5093acd02"
+ojs_bootstrap_url: "https://github.com/NateWr/bootstrap3/releases/download/{{ ojs_bootstrap_version }}/"
 ojs_bootstrap_tarball: "bootstrap3-{{ ojs_bootstrap_version }}.tar.gz"
 
 ojs_parent_dir: "/srv"

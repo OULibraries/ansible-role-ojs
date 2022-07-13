@@ -1,7 +1,5 @@
 ---
 
-
-
 - name: Download  OJS Bootstrap Theme tarball
   get_url:
     url: "{{ ojs_bootstrap_url }}/{{ ojs_bootstrap_tarball }}"
@@ -20,9 +18,9 @@
    
 - name: Download  OJS Crossref Reference Linking Plugin tarball
   get_url:
-    url: "https://github.com/pkp/crossrefReferenceLinking/releases/download/v1_0_1-1/crossrefReferenceLinking-v1_0_1-1.tar.gz"
+    url: "https://github.com/pkp/crossrefReferenceLinking/releases/download/v1_0_2-1/crossrefReferenceLinking-v1_0_2-1.tar.gz"
     dest: "/tmp/crossref.tar.gz"
-    checksum: "md5:11e8c5f25350d334054cc57036ab5512"
+    checksum: "md5:07407224b3fa44ced7a0cb242561df76"
   check_mode: no
 
 - name: Deploy OJS Crossref Reference Linking Plugin
