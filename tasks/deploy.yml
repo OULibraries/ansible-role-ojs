@@ -56,7 +56,9 @@
   with_items: "{{ ojs_calculated_paths|default([]) }}"
   tags: ojs_plugins
 
-- include: upgrade.yml
-  with_items: "{{ ojs_calculated_paths|default([]) }}"
-  tags: ojs_upgrade
+- name: Conditionally run the OJS upgrade script if flag is set
+  block:
+    - include: upgrade.yml
+      with_items: "{{ ojs_calculated_paths|default([]) }}"
+      tags: ojs_upgrade
   when: ojs_do_upgrade
