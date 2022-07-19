@@ -25,7 +25,7 @@ ojs_orcid_md5sum: "169557e599e1b7e22a18f919fb24589c"
 ojs_orcid_url: "https://github.com/pkp/orcidProfile/releases/download/{{ ojs_orcid_version }}/"
 ojr_orcid_tarball: "orcidProfile-{{ ojs_orcid_version }}.tar.gz"
 
-ojs_quicksubmit_version: "v1_0_6_0"
+ojs_quicksubmit_version: "v1_0_6-0"
 ojs_quicksubmit_md5sum: "7d36d2260c58cad45a08e8fa11f3d628"
 ojs_quicksubmit_url: "https://github.com/pkp/quickSubmit/releases/download/{{ ojs_quicksubmit_version }}/"
 ojs_quicksubmit_tarball: "quickSubmit-{{ ojs_quicksubmit_version }}.tar.gz"
