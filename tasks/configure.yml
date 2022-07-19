@@ -26,5 +26,9 @@
       ^;date.timezone =$
     replace: "date.timezone = America/Chicago"
 
-
-
+- name: Set memory_limit
+  replace:
+    dest: "/etc/opt/rh/{{ sclphp_version }}/php.ini"
+    regexp: >
+      ^memory_limit = 128M$
+    replace: "memory_limit = 256M"
