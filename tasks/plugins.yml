@@ -1,6 +1,6 @@
 ---
 
-- name: Download  OJS Bootstrap Theme tarball
+- name: Download OJS Bootstrap Theme tarball
   get_url:
     url: "{{ ojs_bootstrap_url }}/{{ ojs_bootstrap_tarball }}"
     dest: "/tmp/{{ ojs_bootstrap_tarball }}"
@@ -11,25 +11,68 @@
   unarchive:
     src: "/tmp/{{ ojs_bootstrap_tarball }}"
     dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
-    creates:  "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
+    creates: "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
+    owner: nginx
+    group: nginx
+    copy: no
+
+- name: Download OJS Default Manuscript Theme tarball
+  get_url:
+    url: "{{ ojs_manuscript_url }}/{{ ojs_manuscript_tarball }}"
+    dest: "/tmp/{{ ojs_manuscript_tarball }}"
+    checksum: "md5:{{ ojs_manuscript_md5sum }}"
+  check_mode: no
+
+- name: Deploy OJS Default Manuscript Theme
+  unarchive:
+    src: "/tmp/{{ ojs_manuscript_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
+    creates: "{{item}}/ojs-{{ ojs_version }}/plugins/themes/defaultManuscript/README.md"
     owner: nginx
     group: nginx
     copy: no
    
-- name: Download  OJS Crossref Reference Linking Plugin tarball
+- name: Download OJS Crossref Reference Linking Plugin tarball
   get_url:
-    url: "https://github.com/pkp/crossrefReferenceLinking/releases/download/v1_0_2-1/crossrefReferenceLinking-v1_0_2-1.tar.gz"
-    dest: "/tmp/crossref.tar.gz"
-    checksum: "md5:07407224b3fa44ced7a0cb242561df76"
+    url: "{{ ojs_crossref_linking_url }}/{{ ojs_crossref_linking_tarball }}"
+    dest: "/tmp/{{ ojs_crossref_linking_tarball }}"
+    checksum: "md5:{{ ojs_crossref_linking_md5sum }}"
   check_mode: no
 
 - name: Deploy OJS Crossref Reference Linking Plugin
   unarchive:
-    src: "/tmp/crossref.tar.gz"
+    src: "/tmp/{{ ojs_crossref_linking_tarball }}"
     dest: "{{item}}/ojs-{{ ojs_version }}/plugins/generic"
     owner: nginx
     group: nginx
     copy: no
 
+- name: Download OJS ORCiD Profile Plugin tarball
+  get_url:
+    url: "{{ ojs_orcid_url }}/{{ ojs_orcid_tarball }}"
+    dest: "/tmp/{{ ojs_orcid_tarball }}"
+    checksum: "md5:{{ ojs_orcid_md5sum }}"
+  check_mode: no
 
+- name: Deploy OJS ORCiD Profile Plugin
+  unarchive:
+    src: "/tmp/{{ ojs_orcid_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/generic"
+    owner: nginx
+    group: nginx
+    copy: no
 
+- name: Download OJS QuickSubmit Plugin tarball
+  get_url:
+    url: "{{ ojs_quicksubmit_url }}/{{ ojs_quicksubmit_tarball }}"
+    dest: "/tmp/{{ ojs_quicksubmit_tarball }}"
+    checksum: "md5:{{ ojs_quicksubmit_md5sum }}"
+  check_mode: no
+
+- name: Deploy OJS QuickSubmit Plugin
+  unarchive:
+    src: "/tmp/{{ ojs_quicksubmit_tarball }}"
+    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/importexport"
+    owner: nginx
+    group: nginx
+    copy: no

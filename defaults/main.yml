@@ -15,6 +15,26 @@ ojs_bootstrap_md5sum: "2cd69477a80252c24c6124e5093acd02"
 ojs_bootstrap_url: "https://github.com/NateWr/bootstrap3/releases/download/{{ ojs_bootstrap_version }}/"
 ojs_bootstrap_tarball: "bootstrap3-{{ ojs_bootstrap_version }}.tar.gz"
 
+ojs_manuscript_version: "v1_0_3-1"
+ojs_manuscript_md5sum: "b5364afaf97fc3d44db4582ac1e5259d"
+ojs_manuscript_url: "https://github.com/NateWr/defaultManuscript/releases/download/{{ ojs_manuscript_version }}/"
+ojs_manuscript_tarball: "defaultManuscript-{{ ojs_manuscript_version }}.tar.gz"
+
+ojs_orcid_version: "v1_1_2-28"
+ojs_orcid_md5sum: "169557e599e1b7e22a18f919fb24589c"
+ojs_orcid_url: "https://github.com/pkp/orcidProfile/releases/download/{{ ojs_orcid_version }}/"
+ojr_orcid_tarball: "orcidProfile-{{ ojs_orcid_version }}.tar.gz"
+
+ojs_quicksubmit_version: "v1_0_6_0"
+ojs_quicksubmit_md5sum: "7d36d2260c58cad45a08e8fa11f3d628"
+ojs_quicksubmit_url: "https://github.com/pkp/quickSubmit/releases/download/{{ ojs_quicksubmit_version }}/"
+ojs_quicksubmit_tarball: "quickSubmit-{{ ojs_quicksubmit_version }}.tar.gz"
+
+ojs_crossref_linking_version: "v1_0_2-1"
+ojs_crossref_linking_md5sum: "07407224b3fa44ced7a0cb242561df76"
+ojs_crossref_linking_url: "https://github.com/pkp/crossrefReferenceLinking/releases/downloads/{{ ojs_crossref_linking_version }}/"
+ojs_crossref_linking_tarball: "crossrefReferenceLinking-{{ ojs_crossref_linking_version }}.tar.gz"
+
 ojs_parent_dir: "/srv"
 ojs_envelope_sender: "lib-noreply@ou.edu"
 ojs_recaptcha_public_key: "your_public_key"
