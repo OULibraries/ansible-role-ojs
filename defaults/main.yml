@@ -23,7 +23,7 @@ ojs_manuscript_tarball: "defaultManuscript-{{ ojs_manuscript_version }}.tar.gz"
 ojs_orcid_version: "v1_1_2-28"
 ojs_orcid_md5sum: "169557e599e1b7e22a18f919fb24589c"
 ojs_orcid_url: "https://github.com/pkp/orcidProfile/releases/download/{{ ojs_orcid_version }}"
-ojr_orcid_tarball: "orcidProfile-{{ ojs_orcid_version }}.tar.gz"
+ojs_orcid_tarball: "orcidProfile-{{ ojs_orcid_version }}.tar.gz"
 
 ojs_quicksubmit_version: "v1_0_6-0"
 ojs_quicksubmit_md5sum: "7d36d2260c58cad45a08e8fa11f3d628"
