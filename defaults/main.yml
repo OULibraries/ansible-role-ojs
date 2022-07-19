@@ -32,7 +32,7 @@ ojs_quicksubmit_tarball: "quickSubmit-{{ ojs_quicksubmit_version }}.tar.gz"
 
 ojs_crossref_linking_version: "v1_0_2-1"
 ojs_crossref_linking_md5sum: "07407224b3fa44ced7a0cb242561df76"
-ojs_crossref_linking_url: "https://github.com/pkp/crossrefReferenceLinking/releases/downloads/{{ ojs_crossref_linking_version }}"
+ojs_crossref_linking_url: "https://github.com/pkp/crossrefReferenceLinking/releases/download/{{ ojs_crossref_linking_version }}"
 ojs_crossref_linking_tarball: "crossrefReferenceLinking-{{ ojs_crossref_linking_version }}.tar.gz"
 
 ojs_parent_dir: "/srv"
