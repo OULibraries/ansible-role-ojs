@@ -11,7 +11,7 @@
  
 
 - name: Run PHP Upgrade Utility
-  shell: "{{sclphp_location}} {{ item }}/ojs/tools/upgrade.php upgrade"
+  shell: "{{sclphp_location}} -d memory_limit=256M {{ item }}/ojs/tools/upgrade.php upgrade"
   tags: php_upgrade, ojs_upgrade
 
 - name: Mark the site as installed in config.inc.php
