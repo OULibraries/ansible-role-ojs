@@ -19,8 +19,8 @@
 
 - name: Install OJS Bootstrap Theme
   command: >
-    php installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/version.xml"
+    "{{ sclphp_location }} installPluginVersion.php
+    {{ item }}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
 
@@ -44,8 +44,8 @@
    
 - name: Install OJS Default Manuscript Theme 
   command: >
-    php installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/defaultManuscript/version.xml"
+    "{{ sclphp_location }} installPluginVersion.php
+    {{ item }}/ojs-{{ ojs_version }}/plugins/themes/defaultManuscript/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
 
@@ -67,8 +67,8 @@
 
 - name: Install OJS Crossref Reference Linking Plugin
   command: >
-    php installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/generic/crossrefReferenceLinking/version.xml"
+    "{{ sclphp_location }} installPluginVersion.php
+    {{ item }}/ojs-{{ ojs_version }}/plugins/generic/crossrefReferenceLinking/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
 
@@ -90,8 +90,8 @@
 
 - name: Install OJS ORCiD Profile Plugin
   command: >
-    php installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/generic/orcidProfile/version.xml"
+    "{{ sclphp_location }} installPluginVersion.php
+    {{ item }}/ojs-{{ ojs_version }}/plugins/generic/orcidProfile/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
 
@@ -113,7 +113,7 @@
 
 - name: Install OJS QuickSubmit Plugin
   command: >
-    php installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/importexport/quickSubmit/version.xml"
+    "{{ sclphp_location }} installPluginVersion.php
+    {{ item }}/ojs-{{ ojs_version }}/plugins/importexport/quickSubmit/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
