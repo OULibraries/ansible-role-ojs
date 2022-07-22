@@ -6,6 +6,7 @@
     dest: "/tmp/{{ ojs_bootstrap_tarball }}"
     checksum: "md5:{{ ojs_bootstrap_md5sum }}"
   check_mode: no
+  tags: ojs_plugins
 
 - name: Deploy OJS Bootstrap Theme
   unarchive:
@@ -16,14 +17,15 @@
     group: nginx
     mode: 0775
     copy: no
+  tags: ojs_plugins
 
 - name: Install OJS Bootstrap Theme
   command: >
-    "{{ sclphp_location }} installPluginVersion.php
-    {{ item }}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/version.xml"
+    {{ sclphp_location }} installPluginVersion.php
+    "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/version.xml"
   args:
     chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
-
+  tags: ojs_plugins
 
 - name: Download OJS Default Manuscript Theme tarball
   get_url:
