@@ -1,121 +1,39 @@
 ---
 
-- name: Download OJS Bootstrap Theme tarball
-  get_url:
-    url: "{{ ojs_bootstrap_url }}/{{ ojs_bootstrap_tarball }}"
-    dest: "/tmp/{{ ojs_bootstrap_tarball }}"
-    checksum: "md5:{{ ojs_bootstrap_md5sum }}"
-  check_mode: no
+- name: Download, deploy, and install additional OJS plugins
+  block:
+    - name: "Download standard OJS plugins"
+      get_url:
+        url: "{{ plugin.url }}/{{ plugin.tarball }}"
+        dest: "/tmp/{{ plugin.tarball }}"
+        checksum: "md5:{{ plugin.md5sum }}"
+      check_mode: no
+      loop: "{{ ojs_plugins }}"
+      loop_control:
+        loop_var: plugin
+
+    - name: "Deploy standard OJS plugins"
+      unarchive:
+        src: "/tmp/{{ plugin.tarball }}"
+        dest: "{{item}}/ojs-{{ ojs_version }}/plugins/{{ plugin.category }}"
+        creates: "{{item}}/ojs-{{ ojs_version }}/plugins/{{ plugin.category }}/{{ plugin.name }}/version.xml"        
+        owner: nginx
+        group: nginx
+        mode: 0775
+        copy: no
+      register: plugins_deployed
+      loop: "{{ ojs_plugins }}"
+      loop_control:
+        loop_var: plugin
+
+    - name: "Install standard OJS plugins"
+      command: >
+        {{ sclphp_location }} installPluginVersion.php
+        "{{ item }}/ojs-{{ ojs_version }}/plugins/{{ plugin.category }}/{{ plugin.name }}/version.xml"
+      args:
+        chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
+      loop: "{{ ojs_plugins }}"
+      loop_control:
+        loop_var: plugin
+      when: plugins_deployed.changed
   tags: ojs_plugins
-
-- name: Deploy OJS Bootstrap Theme
-  unarchive:
-    src: "/tmp/{{ ojs_bootstrap_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
-    creates: "{{item}}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/README.md"
-    owner: nginx
-    group: nginx
-    mode: 0775
-    copy: no
-  tags: ojs_plugins
-
-- name: Install OJS Bootstrap Theme
-  command: >
-    {{ sclphp_location }} installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/bootstrap3/version.xml"
-  args:
-    chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
-  tags: ojs_plugins
-
-- name: Download OJS Default Manuscript Theme tarball
-  get_url:
-    url: "{{ ojs_manuscript_url }}/{{ ojs_manuscript_tarball }}"
-    dest: "/tmp/{{ ojs_manuscript_tarball }}"
-    checksum: "md5:{{ ojs_manuscript_md5sum }}"
-  check_mode: no
-
-- name: Deploy OJS Default Manuscript Theme
-  unarchive:
-    src: "/tmp/{{ ojs_manuscript_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/themes"
-    creates: "{{item}}/ojs-{{ ojs_version }}/plugins/themes/defaultManuscript/README.md"
-    owner: nginx
-    group: nginx
-    mode: 0775
-    copy: no
-   
-- name: Install OJS Default Manuscript Theme 
-  command: >
-    {{ sclphp_location }} installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/themes/defaultManuscript/version.xml"
-  args:
-    chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
-
-- name: Download OJS Crossref Reference Linking Plugin tarball
-  get_url:
-    url: "{{ ojs_crossref_linking_url }}/{{ ojs_crossref_linking_tarball }}"
-    dest: "/tmp/{{ ojs_crossref_linking_tarball }}"
-    checksum: "md5:{{ ojs_crossref_linking_md5sum }}"
-  check_mode: no
-
-- name: Deploy OJS Crossref Reference Linking Plugin
-  unarchive:
-    src: "/tmp/{{ ojs_crossref_linking_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/generic"
-    owner: nginx
-    group: nginx
-    mode: 0775
-    copy: no
-
-- name: Install OJS Crossref Reference Linking Plugin
-  command: >
-    {{ sclphp_location }} installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/generic/crossrefReferenceLinking/version.xml"
-  args:
-    chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
-
-- name: Download OJS ORCiD Profile Plugin tarball
-  get_url:
-    url: "{{ ojs_orcid_url }}/{{ ojs_orcid_tarball }}"
-    dest: "/tmp/{{ ojs_orcid_tarball }}"
-    checksum: "md5:{{ ojs_orcid_md5sum }}"
-  check_mode: no
-
-- name: Deploy OJS ORCiD Profile Plugin
-  unarchive:
-    src: "/tmp/{{ ojs_orcid_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/generic"
-    owner: nginx
-    group: nginx
-    mode: 0775
-    copy: no
-
-- name: Install OJS ORCiD Profile Plugin
-  command: >
-    {{ sclphp_location }} installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/generic/orcidProfile/version.xml"
-  args:
-    chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
-
-- name: Download OJS QuickSubmit Plugin tarball
-  get_url:
-    url: "{{ ojs_quicksubmit_url }}/{{ ojs_quicksubmit_tarball }}"
-    dest: "/tmp/{{ ojs_quicksubmit_tarball }}"
-    checksum: "md5:{{ ojs_quicksubmit_md5sum }}"
-  check_mode: no
-
-- name: Deploy OJS QuickSubmit Plugin
-  unarchive:
-    src: "/tmp/{{ ojs_quicksubmit_tarball }}"
-    dest: "{{item}}/ojs-{{ ojs_version }}/plugins/importexport"
-    owner: nginx
-    group: nginx
-    mode: 0775
-    copy: no
-
-- name: Install OJS QuickSubmit Plugin
-  command: >
-    {{ sclphp_location }} installPluginVersion.php
-    "{{ item }}/ojs-{{ ojs_version }}/plugins/importexport/quickSubmit/version.xml"
-  args:
-    chdir: "{{ item }}/ojs-{{ ojs_version }}/lib/pkp/tools/"
